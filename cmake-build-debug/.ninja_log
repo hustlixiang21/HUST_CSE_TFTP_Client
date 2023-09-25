@@ -1,0 +1,19 @@
+# ninja log v5
+13	2863	7164684003742368	C:/Users/lixiang/CLionProjects/socket/cmake-build-debug/socket_autogen/mocs_compilation.cpp	d0184b05436bd4bd
+13	2863	7164684003742368	socket_autogen/timestamp	d0184b05436bd4bd
+2864	10512	7164684081140064	CMakeFiles/socket.dir/socket_autogen/mocs_compilation.cpp.obj	3721e459704d6be9
+13	2863	7164684003742368	socket_autogen/mocs_compilation.cpp	d0184b05436bd4bd
+13	2863	7164684003742368	C:/Users/lixiang/CLionProjects/socket/cmake-build-debug/socket_autogen/timestamp	d0184b05436bd4bd
+10425	16219	7164684138251088	CMakeFiles/socket.dir/main.cpp.obj	14fbfe8ee6d773bc
+16219	16947	7164684142051162	socket.exe	9cfb88eb438027ff
+2875	11738	7164684093376352	CMakeFiles/socket.dir/mainwindow.cpp.obj	83b1a4e3cc41d62d
+7	1355	7173131215604047	build.ninja	fc8830f7c5a9f4fa
+2869	10424	7164684080260263	CMakeFiles/socket.dir/util.cpp.obj	4848336cf26f98c3
+308	436	7164496335053276	socket_autogen/EWIEGA46WW/qrc_resources.cpp	bba378ad47bdc00d
+308	436	7164496335053276	C:/Users/lixiang/CLionProjects/socket/cmake-build-debug/socket_autogen/EWIEGA46WW/qrc_resources.cpp	bba378ad47bdc00d
+436	656	7164496337372038	CMakeFiles/socket.dir/socket_autogen/EWIEGA46WW/qrc_resources.cpp.obj	8548677a8f5578ba
+24	8929	7173131215604047	build.ninja	fc8830f7c5a9f4fa
+29	856	7173131227732253	socket_autogen/timestamp	d0184b05436bd4bd
+29	856	7173131227732253	socket_autogen/mocs_compilation.cpp	d0184b05436bd4bd
+29	856	7173131227732253	C:/Users/lixiang/CLionProjects/socket/cmake-build-debug/socket_autogen/timestamp	d0184b05436bd4bd
+29	856	7173131227732253	C:/Users/lixiang/CLionProjects/socket/cmake-build-debug/socket_autogen/mocs_compilation.cpp	d0184b05436bd4bd

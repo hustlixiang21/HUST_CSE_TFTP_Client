@@ -1,0 +1,569 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+    <class>MainWindow</class>
+    <widget class="QMainWindow" name="MainWindow">
+        <property name="geometry">
+            <rect>
+                <x>0</x>
+                <y>0</y>
+                <width>560</width>
+                <height>460</height>
+            </rect>
+        </property>
+        <property name="minimumSize">
+            <size>
+                <width>560</width>
+                <height>460</height>
+            </size>
+        </property>
+        <property name="maximumSize">
+            <size>
+                <width>560</width>
+                <height>460</height>
+            </size>
+        </property>
+        <property name="contextMenuPolicy">
+            <enum>Qt::NoContextMenu</enum>
+        </property>
+        <property name="windowTitle">
+            <string>TFTP Client</string>
+        </property>
+        <property name="windowIcon">
+            <iconset resource="resources.qrc">
+                <normaloff>:/resources/images/appicon.png</normaloff>:/resources/images/appicon.png
+            </iconset>
+        </property>
+        <widget class="QWidget" name="centralwidget">
+            <widget class="QTabWidget" name="tabWidget">
+                <property name="geometry">
+                    <rect>
+                        <x>10</x>
+                        <y>0</y>
+                        <width>541</width>
+                        <height>141</height>
+                    </rect>
+                </property>
+                <property name="currentIndex">
+                    <number>0</number>
+                </property>
+                <widget class="QWidget" name="Upload">
+                    <attribute name="title">
+                        <string>Upload</string>
+                    </attribute>
+                    <widget class="QPushButton" name="uploadconfirm">
+                        <property name="geometry">
+                            <rect>
+                                <x>370</x>
+                                <y>80</y>
+                                <width>101</width>
+                                <height>21</height>
+                            </rect>
+                        </property>
+                        <property name="text">
+                            <string>Upload</string>
+                        </property>
+                        <property name="icon">
+                            <iconset resource="resources.qrc">
+                                <normaloff>:/resources/images/upload.png</normaloff>:/resources/images/upload.png
+                            </iconset>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" name="up_local_ip">
+                        <property name="geometry">
+                            <rect>
+                                <x>10</x>
+                                <y>40</y>
+                                <width>54</width>
+                                <height>21</height>
+                            </rect>
+                        </property>
+                        <property name="text">
+                            <string>Local IP</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" name="up_server_ip">
+                        <property name="geometry">
+                            <rect>
+                                <x>10</x>
+                                <y>0</y>
+                                <width>54</width>
+                                <height>21</height>
+                            </rect>
+                        </property>
+                        <property name="text">
+                            <string>Server IP</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" name="up_local_filename">
+                        <property name="geometry">
+                            <rect>
+                                <x>230</x>
+                                <y>20</y>
+                                <width>101</width>
+                                <height>21</height>
+                            </rect>
+                        </property>
+                        <property name="text">
+                            <string>Local FileName</string>
+                        </property>
+                    </widget>
+                    <widget class="QLineEdit" name="up_Server_IP">
+                        <property name="geometry">
+                            <rect>
+                                <x>70</x>
+                                <y>0</y>
+                                <width>151</width>
+                                <height>20</height>
+                            </rect>
+                        </property>
+                        <property name="text">
+                            <string/>
+                        </property>
+                        <property name="placeholderText">
+                            <string>Input Server IP</string>
+                        </property>
+                    </widget>
+                    <widget class="QComboBox" name="up_comboBox">
+                        <property name="geometry">
+                            <rect>
+                                <x>200</x>
+                                <y>80</y>
+                                <width>71</width>
+                                <height>21</height>
+                            </rect>
+                        </property>
+                        <property name="contextMenuPolicy">
+                            <enum>Qt::PreventContextMenu</enum>
+                        </property>
+                        <property name="autoFillBackground">
+                            <bool>false</bool>
+                        </property>
+                        <property name="currentText">
+                            <string extracomment="以ascii码形式传输">netascii</string>
+                        </property>
+                        <item>
+                            <property name="text">
+                                <string extracomment="以ascii码形式传输文件">netascii</string>
+                            </property>
+                        </item>
+                        <item>
+                            <property name="text">
+                                <string extracomment="以二进制形式传输文件">octet</string>
+                            </property>
+                        </item>
+                    </widget>
+                    <widget class="QToolButton" name="up_selectpath">
+                        <property name="geometry">
+                            <rect>
+                                <x>510</x>
+                                <y>20</y>
+                                <width>21</width>
+                                <height>21</height>
+                            </rect>
+                        </property>
+                        <property name="text">
+                            <string>...</string>
+                        </property>
+                        <property name="icon">
+                            <iconset resource="resources.qrc">
+                                <normaloff>:/resources/images/openfile.png</normaloff>:/resources/images/openfile.png
+                            </iconset>
+                        </property>
+                        <property name="popupMode">
+                            <enum>QToolButton::InstantPopup</enum>
+                        </property>
+                    </widget>
+                    <widget class="QLineEdit" name="up_LocalFileName">
+                        <property name="geometry">
+                            <rect>
+                                <x>330</x>
+                                <y>20</y>
+                                <width>171</width>
+                                <height>20</height>
+                            </rect>
+                        </property>
+                        <property name="text">
+                            <string/>
+                        </property>
+                        <property name="placeholderText">
+                            <string>Input Local FileName</string>
+                        </property>
+                        <property name="clearButtonEnabled">
+                            <bool>true</bool>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" name="up_mode">
+                        <property name="geometry">
+                            <rect>
+                                <x>60</x>
+                                <y>80</y>
+                                <width>121</width>
+                                <height>21</height>
+                            </rect>
+                        </property>
+                        <property name="text">
+                            <string>Transmission Mode</string>
+                        </property>
+                    </widget>
+                    <widget class="QLineEdit" name="up_Local_IP">
+                        <property name="geometry">
+                            <rect>
+                                <x>70</x>
+                                <y>40</y>
+                                <width>151</width>
+                                <height>20</height>
+                            </rect>
+                        </property>
+                        <property name="text">
+                            <string/>
+                        </property>
+                        <property name="placeholderText">
+                            <string>Input Local IP</string>
+                        </property>
+                    </widget>
+                </widget>
+                <widget class="QWidget" name="Download">
+                    <attribute name="title">
+                        <string>DownLoad</string>
+                    </attribute>
+                    <widget class="QLabel" name="down_local_filename">
+                        <property name="geometry">
+                            <rect>
+                                <x>240</x>
+                                <y>40</y>
+                                <width>81</width>
+                                <height>21</height>
+                            </rect>
+                        </property>
+                        <property name="text">
+                            <string>Local FilePath</string>
+                        </property>
+                    </widget>
+                    <widget class="QLineEdit" name="down_LocalFilePath">
+                        <property name="geometry">
+                            <rect>
+                                <x>330</x>
+                                <y>40</y>
+                                <width>171</width>
+                                <height>20</height>
+                            </rect>
+                        </property>
+                        <property name="text">
+                            <string/>
+                        </property>
+                        <property name="placeholderText">
+                            <string>Input Local FilePath</string>
+                        </property>
+                    </widget>
+                    <widget class="QLineEdit" name="down_Local_IP">
+                        <property name="geometry">
+                            <rect>
+                                <x>70</x>
+                                <y>40</y>
+                                <width>151</width>
+                                <height>20</height>
+                            </rect>
+                        </property>
+                        <property name="text">
+                            <string/>
+                        </property>
+                        <property name="placeholderText">
+                            <string>Input Local IP</string>
+                        </property>
+                    </widget>
+                    <widget class="QComboBox" name="down_comboBox">
+                        <property name="geometry">
+                            <rect>
+                                <x>200</x>
+                                <y>80</y>
+                                <width>71</width>
+                                <height>21</height>
+                            </rect>
+                        </property>
+                        <property name="contextMenuPolicy">
+                            <enum>Qt::PreventContextMenu</enum>
+                        </property>
+                        <property name="autoFillBackground">
+                            <bool>false</bool>
+                        </property>
+                        <property name="currentText">
+                            <string extracomment="以ascii码形式传输">netascii</string>
+                        </property>
+                        <item>
+                            <property name="text">
+                                <string extracomment="以ascii码形式传输文件">netascii</string>
+                            </property>
+                        </item>
+                        <item>
+                            <property name="text">
+                                <string extracomment="以二进制形式传输文件">octet</string>
+                            </property>
+                        </item>
+                    </widget>
+                    <widget class="QPushButton" name="downloadconfirm">
+                        <property name="geometry">
+                            <rect>
+                                <x>370</x>
+                                <y>80</y>
+                                <width>101</width>
+                                <height>21</height>
+                            </rect>
+                        </property>
+                        <property name="text">
+                            <string>DownLoad</string>
+                        </property>
+                        <property name="icon">
+                            <iconset resource="resources.qrc">
+                                <normaloff>:/resources/images/download.png</normaloff>:/resources/images/download.png
+                            </iconset>
+                        </property>
+                    </widget>
+                    <widget class="QLineEdit" name="down_Server_IP">
+                        <property name="geometry">
+                            <rect>
+                                <x>70</x>
+                                <y>0</y>
+                                <width>151</width>
+                                <height>20</height>
+                            </rect>
+                        </property>
+                        <property name="text">
+                            <string/>
+                        </property>
+                        <property name="placeholderText">
+                            <string>Input Server IP</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" name="down_local_ip_">
+                        <property name="geometry">
+                            <rect>
+                                <x>10</x>
+                                <y>40</y>
+                                <width>54</width>
+                                <height>21</height>
+                            </rect>
+                        </property>
+                        <property name="text">
+                            <string>Local IP</string>
+                        </property>
+                    </widget>
+                    <widget class="QToolButton" name="down_selectpath">
+                        <property name="geometry">
+                            <rect>
+                                <x>510</x>
+                                <y>40</y>
+                                <width>21</width>
+                                <height>21</height>
+                            </rect>
+                        </property>
+                        <property name="text">
+                            <string>...</string>
+                        </property>
+                        <property name="icon">
+                            <iconset resource="resources.qrc">
+                                <normaloff>:/resources/images/openfile.png</normaloff>:/resources/images/openfile.png
+                            </iconset>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" name="down_mode">
+                        <property name="geometry">
+                            <rect>
+                                <x>60</x>
+                                <y>80</y>
+                                <width>121</width>
+                                <height>21</height>
+                            </rect>
+                        </property>
+                        <property name="text">
+                            <string>Transmission Mode</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" name="down_server_ip">
+                        <property name="geometry">
+                            <rect>
+                                <x>10</x>
+                                <y>0</y>
+                                <width>54</width>
+                                <height>21</height>
+                            </rect>
+                        </property>
+                        <property name="text">
+                            <string>Server IP</string>
+                        </property>
+                    </widget>
+                    <widget class="QLabel" name="down_server_filename">
+                        <property name="geometry">
+                            <rect>
+                                <x>230</x>
+                                <y>0</y>
+                                <width>101</width>
+                                <height>21</height>
+                            </rect>
+                        </property>
+                        <property name="text">
+                            <string>Server FileName</string>
+                        </property>
+                    </widget>
+                    <widget class="QLineEdit" name="down_Server_FileName">
+                        <property name="geometry">
+                            <rect>
+                                <x>330</x>
+                                <y>0</y>
+                                <width>171</width>
+                                <height>20</height>
+                            </rect>
+                        </property>
+                        <property name="text">
+                            <string/>
+                        </property>
+                        <property name="placeholderText">
+                            <string>Input Server FileName</string>
+                        </property>
+                    </widget>
+                </widget>
+            </widget>
+            <widget class="QGroupBox" name="info">
+                <property name="geometry">
+                    <rect>
+                        <x>10</x>
+                        <y>140</y>
+                        <width>551</width>
+                        <height>309</height>
+                    </rect>
+                </property>
+                <property name="title">
+                    <string>Info</string>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_4">
+                    <item>
+                        <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="1,2,1,1,2,1,15">
+                            <item>
+                                <widget class="QLabel" name="label">
+                                    <property name="text">
+                                        <string>↑:</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <widget class="QLabel" name="UploadLabel">
+                                    <property name="text">
+                                        <string>0.00</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <widget class="QLabel" name="label_4">
+                                    <property name="text">
+                                        <string>kB/s</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <widget class="QLabel" name="label_2">
+                                    <property name="text">
+                                        <string>↓:</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <widget class="QLabel" name="DownloadLabel">
+                                    <property name="text">
+                                        <string>0.00</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <widget class="QLabel" name="label_5">
+                                    <property name="text">
+                                        <string>kB/s</string>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <widget class="QProgressBar" name="ProgressBar">
+                                    <property name="value">
+                                        <number>0</number>
+                                    </property>
+                                </widget>
+                            </item>
+                        </layout>
+                    </item>
+                    <item>
+                        <widget class="QTextBrowser" name="Output">
+                            <property name="frameShape">
+                                <enum>QFrame::Box</enum>
+                            </property>
+                            <property name="frameShadow">
+                                <enum>QFrame::Raised</enum>
+                            </property>
+                            <property name="lineWidth">
+                                <number>1</number>
+                            </property>
+                        </widget>
+                    </item>
+                    <item>
+                        <layout class="QHBoxLayout" name="horizontalLayout_10">
+                            <item>
+                                <spacer name="horizontalSpacer">
+                                    <property name="orientation">
+                                        <enum>Qt::Horizontal</enum>
+                                    </property>
+                                    <property name="sizeHint" stdset="0">
+                                        <size>
+                                            <width>40</width>
+                                            <height>20</height>
+                                        </size>
+                                    </property>
+                                </spacer>
+                            </item>
+                            <item>
+                                <widget class="QPushButton" name="Clear">
+                                    <property name="text">
+                                        <string>Clear</string>
+                                    </property>
+                                    <property name="icon">
+                                        <iconset resource="resources.qrc">
+                                            <normaloff>:/resources/images/clear.png</normaloff>
+                                            :/resources/images/clear.png
+                                        </iconset>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <widget class="QPushButton" name="Save">
+                                    <property name="text">
+                                        <string>Save</string>
+                                    </property>
+                                    <property name="icon">
+                                        <iconset resource="resources.qrc">
+                                            <normaloff>:/resources/images/save.png</normaloff>
+                                            :/resources/images/save.png
+                                        </iconset>
+                                    </property>
+                                </widget>
+                            </item>
+                            <item>
+                                <spacer name="horizontalSpacer_2">
+                                    <property name="orientation">
+                                        <enum>Qt::Horizontal</enum>
+                                    </property>
+                                    <property name="sizeHint" stdset="0">
+                                        <size>
+                                            <width>40</width>
+                                            <height>20</height>
+                                        </size>
+                                    </property>
+                                </spacer>
+                            </item>
+                        </layout>
+                    </item>
+                </layout>
+            </widget>
+        </widget>
+        <widget class="QStatusBar" name="statusbar"/>
+    </widget>
+    <resources>
+        <include location="resources.qrc"/>
+    </resources>
+    <connections/>
+</ui>

@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>resources/images/clear.png</file>
+        <file>resources/images/save.png</file>
+        <file>resources/images/download.png</file>
+        <file>resources/images/upload.png</file>
+        <file>resources/images/openfile.png</file>
+        <file>resources/images/appicon.png</file>
+        <file>resources/images/appicon2.png</file>
+    </qresource>
+</RCC>

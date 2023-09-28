@@ -17,15 +17,12 @@
 
 #define SERV_PORT 69
 
-typedef unsigned short uint2; // 2Byte无符号整数
-
-#define SERV_PORT 69
 // 定义TFTP操作码
-#define CMD_RRQ (uint2)1
-#define CMD_WRQ (uint2)2
-#define CMD_DAT (uint2)3
-#define CMD_ACK (uint2)4
-#define CMD_ERR (uint2)5
+#define CMD_RRQ (uint16_t)1
+#define CMD_WRQ (uint16_t)2
+#define CMD_DAT (uint16_t)3
+#define CMD_ACK (uint16_t)4
+#define CMD_ERR (uint16_t)5
 
 #define MODE_NETASCII 0
 #define MODE_OCTET 1
@@ -36,8 +33,9 @@ typedef unsigned short uint2; // 2Byte无符号整数
 #define ERRCODE_SIZE 2
 #define REQ_SIZE 512
 #define ERROR_SIZE 512
-#define TFTP_DEFAULT_BLOCK_SIZE 512
+#define TFTP_MAX_BLOCK_SIZE 512
 #define TFTP_MIN_BLOCK_SIZE 8
+#define TFTP_MAX_RETRANSMIT 10
 
 #define TFTP_CORRECT 0
 #define ERROR_INVALID_ARG -1
@@ -60,7 +58,7 @@ typedef unsigned short uint2; // 2Byte无符号整数
 #define ERROR_SELECT_TIMEOUT -42
 #define ERROR_SELECT_CONNECT_CLOSE -43
 #define TFTP_ERROR_WRONG_PKT -61
-#define TFTP_NOT_SUPPORT_EXT -62
+
 
 // 请求包（包括写请求和读请求）数据结构的定义
 typedef struct {
@@ -77,7 +75,7 @@ typedef struct {
         char opMsg[2]; //
     };
     union {
-        char data[TFTP_DEFAULT_BLOCK_SIZE];
+        char data[TFTP_MAX_BLOCK_SIZE];
         char errMsg[ERROR_SIZE];
     };
 } PKG_DATA_ERROR;

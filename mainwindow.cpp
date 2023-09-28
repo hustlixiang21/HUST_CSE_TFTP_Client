@@ -1,27 +1,34 @@
-//
-// Created by lixiang on 2023/9/12.
-//
-
-// You may need to build the project (run Qt uic code generator) to get "ui_MainWindow.h" resolved
-
 #include "mainwindow.h"
 #include "ui_MainWindow.h"
 
-
-MainWindow::MainWindow(QWidget *parent)
-        : QMainWindow(parent), ui(new Ui::MainWindow) {
+MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
-    connect(this, &MainWindow::sendMsg, this, [=](int code, QString msg) {
+    /****** 链接信号和槽函数 ******/
+    /* 连接Write2Output信号和槽函数,用于向ui中的Output区输出信息
+     * 默认错误信息为红色，正确信息为绿色,若只是正常输出，raw设置为True即可
+     * @param
+     * code : 信息代码
+     * msg : 信息内容
+     * raw : 是否输出为原始信息
+     * */
+    connect(this, &MainWindow::Write2Output, this, [=](int code, const QString &msg, bool raw) {
         QString fullMsg = QDateTime::currentDateTime().toString("[MM/dd hh:mm:ss]");
         // OK设置成绿色 ERROR设置成红色
-        fullMsg += (code == TFTP_CORRECT ? " <font color=\"#00FF00\">OK</font> "
-                                         : " <font color=\"#FF0000\">ERROR</font> ") + msg;
+        if (raw) {
+            fullMsg += msg;
+        } else {
+            fullMsg += (code == TFTP_CORRECT ? " <font color=\"#00FF00\">OK</font> "
+                                             : " <font color=\"#FF0000\">ERROR</font> ") + msg;
+        }
         ui->Output->append(fullMsg);
     });
+    // 链接一些按钮的点击事件
     connect(ui->up_selectpath, SIGNAL(clicked()), this, SLOT(Slot_File_Path_Select_pressed()));
     connect(ui->Clear, SIGNAL(clicked()), ui->Output, SLOT(clear()));
     connect(ui->Save, SIGNAL(clicked()), this, SLOT(Slot_Save2log_pressed()));
     connect(ui->uploadconfirm, SIGNAL(clicked()), this, SLOT(Slot_Upload_pressed()));
+    // 连接进度条信号
+    connect(this, &MainWindow::Set_ProcessBar_Val, this, [=](int val) { ui->ProgressBar->setValue(val); });
     Init_ui();
 }
 
@@ -34,20 +41,20 @@ void MainWindow::Init_ui() {
     WSADATA wsaData;
     int nRc = WSAStartup(0x0101, &wsaData);
     if (nRc) {
-        emit sendMsg(ERROR_SOCKET_ERROR, QString("WSAStartup failed with error: %1").arg(nRc));
+        emit Write2Output(ERROR_SOCKET_ERROR, QString("WSAStartup failed with error: %1").arg(nRc));
     }
     if (wsaData.wVersion != 0x0101) {
         //报告错误给用户，清除Winsock
-        emit sendMsg(ERROR_SOCKET_ERROR, QString("Winsock version is not correct: %1").arg(wsaData.wVersion));
+        emit Write2Output(ERROR_SOCKET_ERROR, QString("Winsock version is not correct: %1").arg(wsaData.wVersion));
         WSACleanup();
     }
-    // emit sendMsg(TFTP_CORRECT, QString("Winsock version is not correct: %1").arg(wsaData.wVersion));
-    // ui->Output->append("<font color=\"#FF0000\">Socket creation failed!\n</font>"); // 设置红色的字体
+    /* output窗口测试
+    emit Write2Output(TFTP_CORRECT, QString("Winsock version is not correct: %1").arg(wsaData.wVersion));
+    ui->Output->append("<font color=\"#FF0000\">Socket creation failed!\n</font>"); // 设置红色的字体
+    */
 }
 
 void MainWindow::Slot_File_Path_Select_pressed() {
-    // 选择文件路径
-    QDir dir;
     // 选择想要上传的文件
     QString PathName = QFileDialog::getOpenFileName(this, tr("Select Local File"), "", tr("file(*)"));
     // 设置文件路径于屏幕上
@@ -72,7 +79,9 @@ void MainWindow::Slot_Save2log_pressed() {
 }
 
 void MainWindow::Slot_Upload_pressed() {
-
+    /****** 获取信息并检查参数，重置进度条 ******/
+    // 重置进度条
+    emit Set_ProcessBar_Val(0);
     // 从用户输入处获取信息并将QString转换为C风格字符串
     QByteArray filepath = ui->up_LocalFileName->text().toLatin1();
     QByteArray server_IP = ui->up_Server_IP->text().toLatin1();
@@ -101,29 +110,38 @@ void MainWindow::Slot_Upload_pressed() {
     }
 
     // 将QByteArray转换为C风格字符串
-    const char *FileName = filepath.data();
+    LocalFile = filepath.data();
     const char *Server_ip = server_IP.data();
     const char *Client_ip = client_IP.data();
     /* 测试用户输入模块*/
     // 转化为Qstring，输出到Output中
-    emit sendMsg(TFTP_CORRECT, QString("Upload Process Begins!"));
-    ui->Output->append("File Path: " + QString::fromLatin1(FileName));
+    emit Write2Output(TFTP_CORRECT, QString("Upload Process Begins!"));
+    ui->Output->append("File Path: " + QString::fromLatin1(LocalFile));
     ui->Output->append("Server IP: " + QString::fromLatin1(Server_ip));
     ui->Output->append("Client IP: " + QString::fromLatin1(Client_ip));
 
     // 从路径中提取文件名
-    char filename[TFTP_DEFAULT_BLOCK_SIZE];
     int temp = 0;
-    for (int i = 0; FileName[i] != '\0'; i++, temp++) {
-        if (FileName[i] == '/') {
+    for (int i = 0; LocalFile[i] != '\0'; i++, temp++) {
+        if (LocalFile[i] == '/') {
             i++;
             temp = 0;
-            filename[temp] = FileName[i];
+            filename[temp] = LocalFile[i];
         } else {
-            filename[temp] = FileName[i];
+            filename[temp] = LocalFile[i];
         }
     }
     filename[temp] = '\0';
+    /****** 获取信息并检查参数 ******/
+
+    /****** 初始化操作，创建绑定套接字和打开文件 ******/
+    // 开始计时
+    StartTime = clock();
+    // 打开文件
+    if (open_file() != TFTP_CORRECT) {
+        Terminate(false);
+        return;
+    }
 
     // 设置服务器端ipv4
     server_ip.sin_family = AF_INET;
@@ -138,49 +156,197 @@ void MainWindow::Slot_Upload_pressed() {
     // 创建客户端套接字,使用UDP协议即type为数据报套接字
     sock = socket(AF_INET, SOCK_DGRAM, 0);
     if (sock == INVALID_SOCKET) {
-        emit sendMsg(ERROR_SOCKET_ERROR, QString("Socket creation failed with error: %1").arg(WSAGetLastError()));
+        emit Write2Output(ERROR_SOCKET_ERROR, QString("Socket creation failed with error: %1").arg(WSAGetLastError()));
         return;
     }
     // 提示套接字创建成功的信息
-    emit sendMsg(TFTP_CORRECT, QString("Socket creation successful!"));
+    emit Write2Output(TFTP_CORRECT, QString("Socket creation successful!"));
     // 绑定客户端套接字
     if (bind(sock, (sockaddr *) &client_ip, sizeof(client_ip)) == SOCKET_ERROR) {
-        emit sendMsg(ERROR_SOCKET_ERROR, QString("Bind socket failed with code : %1.").arg((WSAGetLastError())));
+        emit Write2Output(ERROR_SOCKET_ERROR, QString("Bind socket failed with code : %1.").arg((WSAGetLastError())));
         return;
     }
     // 提示套接字绑定成功的信息
-    emit sendMsg(TFTP_CORRECT, QString("Socket Binding Successful!"));
+    emit Write2Output(TFTP_CORRECT, QString("Socket Binding Successful!"));
+    /****** 初始化套接字 ******/
 
-    // 定义传输的Mode
-    int Mode = ui->up_comboBox->currentIndex();
+    /****** 构造请求包并发送请求报文 ******/
+    // 定义传输的Mode以及操作
+    Mode = ui->up_comboBox->currentIndex();
+    OP = CMD_WRQ;
     // 向Output显示传输方式
-    ui->Output->append("Current Transmission Mode: " + ui->up_comboBox->currentText());
-    // 定义数据包
-    PKG_REQUEST request_packet, receive_packet;
+    emit Write2Output(TFTP_CORRECT, QString("Mode : %1").arg(Mode == MODE_NETASCII ? "netascii" : "octet"));
     // 组装请求报文
-    request_packet.opcode = htons(CMD_WRQ);
+    Req_Pkt.opcode = htons(OP);
 
     // 编码成netascii，正常模式下就是以二进制bin方式传输
     if (Mode == MODE_NETASCII)
-        encodeNetascii(FileName);
+        encodeNetascii(LocalFile);
     // 填充filename和mode
     int reqMsgLen = 0;
-    appendMsg(request_packet.reqMsg, REQ_SIZE, &reqMsgLen, "%s", filename);
-    appendMsg(request_packet.reqMsg, REQ_SIZE, &reqMsgLen, Mode == MODE_NETASCII ? "netascii" : "octet");
+    appendMsg(Req_Pkt.reqMsg, REQ_SIZE, &reqMsgLen, "%s", filename);
+    appendMsg(Req_Pkt.reqMsg, REQ_SIZE, &reqMsgLen, Mode == MODE_NETASCII ? "netascii" : "octet");
 
+    //
+    emit Write2Output(TFTP_CORRECT, QString("********************** Start Write **********************"), true);
     // 发送请求报文
-    int res = sendPkt((char *) &request_packet, OP_SIZE + reqMsgLen);
+    int res = sendPkt((char *) &Req_Pkt, OP_SIZE + reqMsgLen);
     if (res < 0) {
-        emit sendMsg(ERROR_SEND_REQ_FAIL,
-                     QString("REQUEST : Send request packet failed with code : %1.").arg((WSAGetLastError())));
+        emit Write2Output(ERROR_SEND_REQ_FAIL,
+                          QString("REQUEST : Send request packet failed with code : %1.").arg((WSAGetLastError())));
         return;
     } else if (res < OP_SIZE + reqMsgLen) {
-        emit sendMsg(TFTP_CORRECT, QString("REQUEST : Send request packet partially with length : %1.").arg(res));
+        emit Write2Output(TFTP_CORRECT, QString("Send request packet partially with length : %1.").arg(res));
     } else {
-        emit sendMsg(TFTP_CORRECT, QString("REQUEST : Send request packet successfully with length : %1.").arg(res));
+        emit Write2Output(TFTP_CORRECT, QString("Send request packet successfully with length : %1.").arg(res));
+    }
+    /****** 构造请求包并发送请求报文 ******/
+
+    /****** 等待服务器的响应，若完成之后就可以进行数据的发送 ******/
+    bool GetFirstAck = false, Finished = false;
+    int Rcvd_Size, Data_Size = 0, Retransmit_Count = 0, Wait_DataRet;
+    Cur_Block_Num = 0;
+
+    // 等待第一个ack的到达
+    while (Retransmit_Count <= TFTP_MAX_RETRANSMIT) {
+        int wait_for_ack = Wait_ACK(Timeout * 1000, Rcvd_Size);
+        // 收到第一个ack
+        if (wait_for_ack == CMD_ACK && ntohs(Rcvd_Pkt.block) == 0) {
+            emit Write2Output(TFTP_CORRECT, QString("Get ACK 0, Start Sending Data!"));
+            GetFirstAck = true;
+            break;
+        }
+            // 如果收到错误包
+        else if (wait_for_ack == CMD_ERR) {
+            // 如果收到的错误包不完整
+            if (Rcvd_Size < OP_SIZE + ERRCODE_SIZE) {
+                emit Write2Output(ERROR_WRONG_PKT, "Wrong error packet.");
+            }
+                // 如果收到的错误包完整，就显示错误包的信息并终止传输
+            else {
+                emit Write2Output(ntohs(Rcvd_Pkt.errCode), QString(Rcvd_Pkt.errMsg));
+            }
+            Terminate(false);
+            return;
+        }
+            // 重传
+        else {
+            Retransmit_Count++;
+            TotalRetransmitCount++;
+            emit Write2Output(ERROR_RETRANSMIT_EQU, "Retransmit request packet.");
+            if (sendPkt((char *) &Req_Pkt, OP_SIZE + reqMsgLen) < 0) {
+                emit Write2Output(ERROR_SEND_REQ_FAIL, "Send request packet fail.");
+                Terminate(false);
+                return;
+            }
+        }
+    }
+    // 如果重传次数过多，就终止传输
+    if (Retransmit_Count > TFTP_MAX_RETRANSMIT) {
+        emit Write2Output(ERROR_RETRANSMIT_TOO_MUCH, "Retransmission times too much.");
+        Terminate(false);
+        return;
     }
 
+    //读取本地文件并且发送DATA报文
+    Retransmit_Count = 0;
+    while (Retransmit_Count <= TFTP_MAX_RETRANSMIT) {
+        // 如果是第一个区块，则是ACK0
+        if (Cur_Block_Num == 0 && GetFirstAck) {
+            Wait_DataRet = CMD_ACK;
+        }
+            // 否则就是等待特定的ACK报文，才能继续发送下一个数据包
+        else {
+            Wait_DataRet = Wait_Specific_PKT(Cur_Block_Num, Timeout * 1000, Rcvd_Size, CMD_ACK);
+        }
+        // 接收到ACK报文
+        if (Wait_DataRet == CMD_ACK) {
+            if (Cur_Block_Num) emit Write2Output(TFTP_CORRECT,
+                                                 QString("Get ACK %1, Data Packet Sent Successfully!").arg(
+                                                         Cur_Block_Num));
+            if (!Finished) {
+                // 读取本地文件
+                Data_Size = (int) fread(dataPkt.data, 1, TFTP_MAX_BLOCK_SIZE, fp);
+                // 如果小于512Bytes，就说明是最后一个包
+                if (Data_Size < BlockSize) {
+                    Finished = true;
+                }
+                // 发送DATA报文
+                dataPkt.block = htons(++Cur_Block_Num);
+                // 若发送失败，就终止传输
+                if (sendPkt((char *) &dataPkt, Data_Size + OP_SIZE + BLOCK_SIZE) < 0) {
+                    emit Write2Output(ERROR_SEND_DATA_FAIL,
+                                      QString("DATA %1 : Send DATA packet fail.").arg(Cur_Block_Num - 1));
+                    Terminate(false);
+                    return;
+                }
+                // 更新进度条和一些需要统计的数据
+                Retransmit_Count = 0;
+                FileSize += Data_Size;
+                if ((double) FileSize / Total_Size > percent) {
+                    percent = (double) FileSize / Total_Size + 0.01;
+                    emit Set_ProcessBar_Val((int) (percent * 100));
+                }
+            } else {
+                Terminate(true);
+                break;
+            }
+        }
+            // 接收到ERROR报文
+        else if (Wait_DataRet == CMD_ERR) {
+            if (Rcvd_Size < OP_SIZE + ERRCODE_SIZE) {
+                emit Write2Output(ERROR_WRONG_PKT, "Wrong error packet.");
+            } else {
+                emit Write2Output(ntohs(Rcvd_Pkt.errCode), QString(Rcvd_Pkt.errMsg));
+            }
+            Terminate(false);
+            return;
+        }
+            // 接收到其他报文
+        else {
+            Retransmit_Count++;
+            TotalRetransmitCount++;
+            if (Cur_Block_Num == 0) {
+                emit Write2Output(ERROR_RETRANSMIT_EQU, "Retransmit request packet.");
+                if (sendPkt((char *) &Req_Pkt, OP_SIZE + reqMsgLen) < 0) {
+                    emit Write2Output(ERROR_SEND_REQ_FAIL, "REQUEST : Send request packet fail.");
+                    Terminate(false);
+                    return;
+                }
+            } else {
+                emit Write2Output(ERROR_RETRANSMIT_ACK, QString("Retransmit DATA packet %1.").arg(Cur_Block_Num));
+                if (sendPkt((char *) &dataPkt, Data_Size + OP_SIZE + BLOCK_SIZE) < 0) {
+                    emit Write2Output(ERROR_SEND_DATA_FAIL,
+                                      QString("DATA %1 : Send DATA packet fail.").arg(Cur_Block_Num));
+                    Terminate(false);
+                    return;
+                }
+            }
+        }
+    }
+
+    if (Retransmit_Count > TFTP_MAX_RETRANSMIT) {
+        emit Write2Output(ERROR_RETRANSMIT_TOO_MUCH, "Retransmission times too much.");
+        Terminate(false);
+    }
 }
+
+/* 打开文件
+ * @param
+ * @return : 0表示成功，-1表示失败
+ * */
+int MainWindow::open_file() {
+    if (fopen_s(&fp, LocalFile, OP == CMD_RRQ ? "wb" : "rb") == 0) {
+        emit Write2Output(TFTP_CORRECT, QString("Open file : Success : %1.").arg(QString::fromLocal8Bit(LocalFile)));
+        Total_Size = getFileSize(LocalFile);
+        return TFTP_CORRECT;
+    } else {
+        emit Write2Output(ERROR_OPENFILE_FAIL,
+                          QString("Open file : Fail : %1.").arg(QString::fromLocal8Bit(LocalFile)));
+        return ERROR_OPENFILE_FAIL;
+    }
+}
+
 
 /* 发送报文
  * @param
@@ -190,7 +356,7 @@ void MainWindow::Slot_Upload_pressed() {
  * */
 int MainWindow::sendPkt(const char *buf, int len) {
     int ret = sendto(sock, buf, len, 0, (SOCKADDR *) &server_ip, sizeof(server_ip));
-    if (ret > 0) { bytesSend += ret; }
+    if (ret > 0) { Bytes_Send += ret; }
     return ret;
 }
 
@@ -199,13 +365,141 @@ int MainWindow::sendPkt(const char *buf, int len) {
  * buf : 待接收报文buf区
  * len : 报文长度
  * @return : 接收的字节数
- *
+ * */
 int MainWindow::recvPkt(char *buf, int len) {
-    int ret = recvfrom(sock, buf, len, 0, (SOCKADDR*)&server_ip, );
-    if (ret > 0) { bytesRecv += ret; }
+    int ret = recvfrom(sock, buf, len, 0, (SOCKADDR *) &server_ip, &server_ip_len);
+    if (ret > 0) { Bytes_Recv += ret; }
     return ret;
 }
-*/
+
+/**
+ * 尝试试在TIMEOUTMS时间内接收一个报文
+ * @TimeOut_Ms : time out interval (ms) 超时时间(毫秒)
+ * @Rcvd_Size  : used to return the size of packet received 用来返回接收报文的大小
+ * #return    : stauts code 状态码
+ */
+int MainWindow::Wait_PKT(int TimeOut_Ms, int &Rcvd_Size) {
+    // 设置超时时间
+    FD_SET readFds;
+    TIMEVAL tv = {TimeOut_Ms / 1000, TimeOut_Ms % 1000 * 1000};
+    FD_ZERO(&readFds);
+    FD_SET(sock, &readFds);
+    // 调用select函数
+    int selectRet = select(sock + 1, &readFds, nullptr, nullptr, &tv);
+
+    // 根据返回值进行判断
+    if (selectRet == SOCKET_ERROR) {
+        return ERROR_SOCKET_ERROR;
+    } else if (selectRet == 0) {
+        return TFTP_ERROR_TIMEOUT;
+    } else {
+        // 接收报文
+        Rcvd_Size = recvPkt((char *) &Rcvd_Pkt, sizeof(PKG_DATA_ERROR));
+        if (Rcvd_Size == SOCKET_ERROR) {
+            emit Write2Output(ERROR_SOCKET_ERROR, "RECV : SOCKET_ERROR.");
+            return ERROR_SOCKET_ERROR;
+        } else if (Rcvd_Size == 0) {
+            emit Write2Output(ERROR_CONNECT_CLOSE, "RECV : The connection has been closed.");
+            return ERROR_CONNECT_CLOSE;
+        }
+    }
+    if (ntohs(Rcvd_Pkt.opcode) == CMD_DAT || ntohs(Rcvd_Pkt.opcode) == CMD_ACK || ntohs(Rcvd_Pkt.opcode) == CMD_ERR) {
+        if (Rcvd_Size < OP_SIZE + MODE_SIZE) { return TFTP_ERROR_WRONG_PKT; }
+    }
+    return TFTP_CORRECT;
+}
+
+
+/* 等待ACK报文
+ * @param
+ * TimeOut_Ms : 超时时间
+ * Rcvd_Size : 接收的字节数
+ * @return : 接收到的报文类型
+ * */
+int MainWindow::Wait_ACK(int TimeOut_Ms, int &Rcvd_Size) {
+    int Rest_Time = TimeOut_Ms, Wait_Pkt, Start_Time;
+
+    do {
+        Start_Time = clock();
+        Wait_Pkt = Wait_PKT(Rest_Time, Rcvd_Size);
+        Rest_Time -= (clock() - Start_Time);
+    } while (Wait_Pkt == TFTP_CORRECT &&
+             (OP == CMD_RRQ ? (ntohs(Rcvd_Pkt.opcode) == CMD_DAT && ntohs(Rcvd_Pkt.block) != 1) :
+              (ntohs(Rcvd_Pkt.opcode) == CMD_ACK && ntohs(Rcvd_Pkt.block) != 0)));
+
+    if (Rest_Time < 0) {
+        emit Write2Output(TFTP_ERROR_TIMEOUT, QString("ACK : Timeout."));
+    }
+
+    return Wait_Pkt != TFTP_CORRECT ? Wait_Pkt : ntohs(Rcvd_Pkt.opcode);
+}
+
+/* 等待特定类型特定block号的报文
+ * @param
+ * block : 块号
+ * TimeOut_Ms : 超时时间
+ * Rcvd_Size : 接收的字节数
+ * cmd : 报文类型
+ * */
+int MainWindow::Wait_Specific_PKT(uint16_t block, int TimeOut_Ms, int &Rcvd_Size, uint16_t Pkt_Type) {
+    int Rest_Time = TimeOut_Ms, Wait_PktRet, Start_Time;
+    do {
+        Start_Time = clock();
+        Wait_PktRet = Wait_PKT(Rest_Time, Rcvd_Size);
+        Rest_Time -= (clock() - Start_Time);
+    } while (Wait_PktRet == TFTP_CORRECT && (ntohs(Rcvd_Pkt.opcode) != Pkt_Type || ntohs(Rcvd_Pkt.block) != block));
+
+    if (Rest_Time < 0) {
+        emit Write2Output(TFTP_ERROR_TIMEOUT,
+                          (Pkt_Type == CMD_ACK ? "ACK " : "DATA") + QString(" %1 : Timeout.").arg(block));
+    }
+
+    return Wait_PktRet != TFTP_CORRECT ? Wait_PktRet : ntohs(Rcvd_Pkt.opcode);
+}
+
+/* 传输终止显示相关信息
+ * @param
+ * is_success : 传输是否成功
+ * */
+void MainWindow::Terminate(bool is_success) {
+    emit Set_ProcessBar_Val(is_success ? 100 : 0);
+    if (is_success) {
+        EndTime = clock();
+        double timeSec = (double) (EndTime - StartTime) / CLOCKS_PER_SEC;
+        if (OP == CMD_RRQ) {
+            emit Write2Output(TFTP_CORRECT,
+                              QString("Block      : %1 blocks ").arg(Cur_Block_Num - (OP == CMD_RRQ ? 1 : 0)), true);
+            emit Write2Output(TFTP_CORRECT, QString("Time       : %1 s ").arg(timeSec), true);
+            emit Write2Output(TFTP_CORRECT, QString("File Size  : %1 kB ").arg((double) FileSize / 1024), true);
+            emit Write2Output(TFTP_CORRECT, QString("Down       : %1 kB ").arg((double) Bytes_Recv / 1024), true);
+            emit Write2Output(TFTP_CORRECT,
+                              QString("Down Speed : %1 kB/s ").arg(((double) Bytes_Recv / 1024 / timeSec)), true);
+            emit Write2Output(TFTP_CORRECT, QString("Retransmit : %1 times ").arg(TotalRetransmitCount), true);
+            emit Write2Output(TFTP_CORRECT, QString("Read Success  : Remote: %1 ==> Local: %2").arg(
+                    QString::fromLocal8Bit(RemoteFile), QString::fromLocal8Bit(LocalFile)), true);
+        } else {
+            emit Write2Output(TFTP_CORRECT,
+                              QString("Block      : %1 blocks ").arg(Cur_Block_Num - (OP == CMD_RRQ ? 1 : 0)), true);
+            emit Write2Output(TFTP_CORRECT, QString("Time       : %1 s ").arg(timeSec), true);
+            emit Write2Output(TFTP_CORRECT, QString("File Size  : %1 kB ").arg((double) FileSize / 1024), true);
+            emit Write2Output(TFTP_CORRECT, QString("Up         : %1 kB ").arg((double) Bytes_Send / 1024), true);
+            emit Write2Output(TFTP_CORRECT,
+                              QString("Up Speed   : %1 kB/s ").arg(((double) Bytes_Send / 1024 / timeSec)), true);
+            emit Write2Output(TFTP_CORRECT, QString("Retransmit : %1 times ").arg(TotalRetransmitCount), true);
+            emit Write2Output(TFTP_CORRECT,
+                              QString("Write Success : Local: %1 ==> Remote: %2").arg(QString::fromLocal8Bit(LocalFile),
+                                                                                      QString::fromLocal8Bit(filename)),
+                              true);
+        }
+        emit Write2Output(TFTP_CORRECT, QString("********************** END SUCCESS **********************"), true);
+    } else {
+        emit Write2Output(TFTP_ERROR_WRONG_PKT, QString("********************** END FAIL **********************"),
+                          true);
+    }
+    if (fp) { fclose(fp); }
+}
+
+
 
 
 

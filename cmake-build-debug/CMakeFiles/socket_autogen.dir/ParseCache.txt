@@ -10,6 +10,7 @@ C:/Users/lixiang/CLionProjects/socket/mainwindow.h
  mdp:C:/Qt/6.4.3/mingw_64/include/QtCore/QDir
  mdp:C:/Qt/6.4.3/mingw_64/include/QtCore/QRegularExpressionMatch
  mdp:C:/Qt/6.4.3/mingw_64/include/QtCore/QString
+ mdp:C:/Qt/6.4.3/mingw_64/include/QtCore/QTimer
  mdp:C:/Qt/6.4.3/mingw_64/include/QtCore/qalgorithms.h
  mdp:C:/Qt/6.4.3/mingw_64/include/QtCore/qanystringview.h
  mdp:C:/Qt/6.4.3/mingw_64/include/QtCore/qarraydata.h
@@ -18,6 +19,7 @@ C:/Users/lixiang/CLionProjects/socket/mainwindow.h
  mdp:C:/Qt/6.4.3/mingw_64/include/QtCore/qatomic.h
  mdp:C:/Qt/6.4.3/mingw_64/include/QtCore/qatomic_cxx11.h
  mdp:C:/Qt/6.4.3/mingw_64/include/QtCore/qbasicatomic.h
+ mdp:C:/Qt/6.4.3/mingw_64/include/QtCore/qbasictimer.h
  mdp:C:/Qt/6.4.3/mingw_64/include/QtCore/qbindingstorage.h
  mdp:C:/Qt/6.4.3/mingw_64/include/QtCore/qbytearray.h
  mdp:C:/Qt/6.4.3/mingw_64/include/QtCore/qbytearrayalgorithms.h
@@ -96,6 +98,7 @@ C:/Users/lixiang/CLionProjects/socket/mainwindow.h
  mdp:C:/Qt/6.4.3/mingw_64/include/QtCore/qtcore-config.h
  mdp:C:/Qt/6.4.3/mingw_64/include/QtCore/qtcoreexports.h
  mdp:C:/Qt/6.4.3/mingw_64/include/QtCore/qtextstream.h
+ mdp:C:/Qt/6.4.3/mingw_64/include/QtCore/qtimer.h
  mdp:C:/Qt/6.4.3/mingw_64/include/QtCore/qtmetamacros.h
  mdp:C:/Qt/6.4.3/mingw_64/include/QtCore/qtypeinfo.h
  mdp:C:/Qt/6.4.3/mingw_64/include/QtCore/qurl.h

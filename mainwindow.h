@@ -25,23 +25,38 @@ public:
     ~MainWindow() override;
 
     signals:
-
     // 信号函数，用于向Output窗口输出信息
-    void Write2Output(int code, const QString msg, bool raw = false);
+    void Write2Output(int code, const QString &msg, bool raw = false);
 
+    // 信号函数，用于设置ProcessBar的数值为val
     void Set_ProcessBar_Val(int val);
 
-private slots:
+    // 设置上传与下载的吞吐量
+    void Set_Upload_Speed(const QString &speed);
+
+    void Set_Download_Speed(const QString &speed);
+
+
+public slots:
     /****** 槽函数，用于响应按钮的点击事件 ******/
     // 选择文件路径
     void Slot_File_Path_Select_pressed();
 
+    // 选择下载时存放的文件路径
+    void Slot_Download_Path_Select_pressed();
+
     // 如果Output区非空则将Output中的输出保存到log文件中
     void Slot_Save2log_pressed();
 
-    // 上传文件按钮被按
+    // 上传文件按钮按下
     void Slot_Upload_pressed();
+
+    // 下载文件按钮按下
+    void Slot_Download_pressed();
     /****** 槽函数，用于响应按钮的点击事件 ******/
+
+    // 用于更新吞吐量
+    void update_speed();
 
 private:
     Ui::MainWindow *ui;
@@ -50,27 +65,25 @@ private:
     int open_file();
     int sendPkt(const char *buf, int len);
     int recvPkt(char *buf, int len);
-
     int Wait_PKT(int TimeOut_Ms, int &Rcvd_Size);
 
-    int Wait_ACK(int TimeOut_Ms, int &Rcvd_Size);
-
+    int Wait_ACK_DAT(int TimeOut_Ms, int &Rcvd_Size);
     int Wait_Specific_PKT(uint16_t block, int TimeOut_Ms, int &Rcvd_Size, uint16_t Pkt_Type);
-
     void Terminate(bool is_success);
 
     // data
     sockaddr_in server_ip, client_ip; // 定义服务器和客户端ip
     SOCKET sock; //定义客户端套接字
-    const char *RemoteFile = nullptr, *LocalFile = nullptr;
+    char *RemoteFile = nullptr, *LocalFile = nullptr;
     char filename[TFTP_MAX_BLOCK_SIZE];
-    int Bytes_Recv, Bytes_Send, lastBytesRecv, lastBytesSend;
-    int TotalRetransmitCount, FileSize, Mode, OP, Total_Size;
+    int Bytes_Recv = 0, Bytes_Send = 0, Last_Bytes_Recv = 0, Last_Bytes_Send = 0;
+    int TotalRetransmitCount = 0, FileSize, Mode, OP, Total_Size;
     int server_ip_len = sizeof(server_ip); // 服务器地址长度
     uint16_t Cur_Block_Num, BlockSize = 512, Timeout = 2;
     FILE *fp = nullptr; // 文件指针
     double percent; // 上传进度
     clock_t StartTime, EndTime; // 计时器
+    QTimer *timer = new QTimer(this); // 定时器
 
     // 需要用到的几个Packet
     PKG_DATA_ERROR Rcvd_Pkt = {0}, dataPkt = {htons(CMD_DAT), {0}};

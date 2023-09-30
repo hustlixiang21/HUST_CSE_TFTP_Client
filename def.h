@@ -7,6 +7,7 @@
 #include <WS2tcpip.h>
 #include <sys/stat.h>
 #include <io.h>
+#include <QTimer>
 #include <QDebug>
 #include "QString"
 #include "QDir"
@@ -36,6 +37,7 @@
 #define TFTP_MAX_BLOCK_SIZE 512
 #define TFTP_MIN_BLOCK_SIZE 8
 #define TFTP_MAX_RETRANSMIT 10
+#define TFTP_REFRESH_INTERVAL 1000  // 吞吐量刷新间隔(ms)
 
 #define TFTP_CORRECT 0
 #define ERROR_INVALID_ARG -1

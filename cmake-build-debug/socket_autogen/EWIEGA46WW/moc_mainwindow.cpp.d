@@ -5,6 +5,7 @@ C:/Users/lixiang/CLionProjects/socket/cmake-build-debug/socket_autogen/EWIEGA46W
   C:/Qt/6.4.3/mingw_64/include/QtCore/QDir \
   C:/Qt/6.4.3/mingw_64/include/QtCore/QRegularExpressionMatch \
   C:/Qt/6.4.3/mingw_64/include/QtCore/QString \
+  C:/Qt/6.4.3/mingw_64/include/QtCore/QTimer \
   C:/Qt/6.4.3/mingw_64/include/QtCore/qalgorithms.h \
   C:/Qt/6.4.3/mingw_64/include/QtCore/qanystringview.h \
   C:/Qt/6.4.3/mingw_64/include/QtCore/qarraydata.h \
@@ -13,6 +14,7 @@ C:/Users/lixiang/CLionProjects/socket/cmake-build-debug/socket_autogen/EWIEGA46W
   C:/Qt/6.4.3/mingw_64/include/QtCore/qatomic.h \
   C:/Qt/6.4.3/mingw_64/include/QtCore/qatomic_cxx11.h \
   C:/Qt/6.4.3/mingw_64/include/QtCore/qbasicatomic.h \
+  C:/Qt/6.4.3/mingw_64/include/QtCore/qbasictimer.h \
   C:/Qt/6.4.3/mingw_64/include/QtCore/qbindingstorage.h \
   C:/Qt/6.4.3/mingw_64/include/QtCore/qbytearray.h \
   C:/Qt/6.4.3/mingw_64/include/QtCore/qbytearrayalgorithms.h \
@@ -91,6 +93,7 @@ C:/Users/lixiang/CLionProjects/socket/cmake-build-debug/socket_autogen/EWIEGA46W
   C:/Qt/6.4.3/mingw_64/include/QtCore/qtcore-config.h \
   C:/Qt/6.4.3/mingw_64/include/QtCore/qtcoreexports.h \
   C:/Qt/6.4.3/mingw_64/include/QtCore/qtextstream.h \
+  C:/Qt/6.4.3/mingw_64/include/QtCore/qtimer.h \
   C:/Qt/6.4.3/mingw_64/include/QtCore/qtmetamacros.h \
   C:/Qt/6.4.3/mingw_64/include/QtCore/qtypeinfo.h \
   C:/Qt/6.4.3/mingw_64/include/QtCore/qurl.h \

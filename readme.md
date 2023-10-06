@@ -58,3 +58,8 @@ Creator开发，所以需要在Clion中配置Qt的开发环境，具体的配置
 - [x] 代码复用率的提升
 - [x] ASCII码的功能貌似有点问题
 - [x] clumsy错误传输的测试
+
+## 项目的截图
+
+![](https://raw.githubusercontent.com/hustlixiang21/blog-image/main/%E6%88%AA%E5%B1%8F2023-10-06%2015.18.00.png)
+![](https://pic1.zhimg.com/80/v2-82a72f1bba15eefe24ed7504858ff4c4_720w.png)

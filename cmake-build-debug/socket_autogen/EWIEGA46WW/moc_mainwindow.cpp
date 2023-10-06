@@ -43,7 +43,7 @@ struct qt_meta_stringdata_MainWindow_t {
     char stringdata13[22];
     char stringdata14[20];
     char stringdata15[22];
-    char stringdata16[13];
+    char stringdata16[10];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(sizeof(qt_meta_stringdata_MainWindow_t::offsetsAndSizes) + ofs), len 
@@ -65,7 +65,7 @@ Q_CONSTINIT static const qt_meta_stringdata_MainWindow_t qt_meta_stringdata_Main
         QT_MOC_LITERAL(167, 21),  // "Slot_Save2log_pressed"
         QT_MOC_LITERAL(189, 19),  // "Slot_Upload_pressed"
         QT_MOC_LITERAL(209, 21),  // "Slot_Download_pressed"
-        QT_MOC_LITERAL(231, 12)   // "update_speed"
+        QT_MOC_LITERAL(231, 9)   // "onTimeout"
     },
     "MainWindow",
     "Write2Output",
@@ -83,7 +83,7 @@ Q_CONSTINIT static const qt_meta_stringdata_MainWindow_t qt_meta_stringdata_Main
     "Slot_Save2log_pressed",
     "Slot_Upload_pressed",
     "Slot_Download_pressed",
-    "update_speed"
+    "onTimeout"
 };
 #undef QT_MOC_LITERAL
 } // unnamed namespace
@@ -171,7 +171,7 @@ Q_CONSTINIT const QMetaObject MainWindow::staticMetaObject = { {
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
         // method 'Slot_Download_pressed'
         QtPrivate::TypeAndForceComplete<void, std::false_type>,
-        // method 'update_speed'
+        // method 'onTimeout'
         QtPrivate::TypeAndForceComplete<void, std::false_type>
     >,
     nullptr
@@ -193,7 +193,7 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 7: _t->Slot_Save2log_pressed(); break;
         case 8: _t->Slot_Upload_pressed(); break;
         case 9: _t->Slot_Download_pressed(); break;
-        case 10: _t->update_speed(); break;
+        case 10: _t->onTimeout(); break;
         default: ;
         }
     } else if (_c == QMetaObject::IndexOfMethod) {

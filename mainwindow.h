@@ -24,16 +24,19 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
 
+    // 定义一些信号函数
     signals:
-    // 信号函数，用于向Output窗口输出信息
+
+    // 向Output窗口输出信息
     void Write2Output(int code, const QString &msg, bool raw = false);
 
-    // 信号函数，用于设置ProcessBar的数值为val
+    // 设置ProcessBar的数值为val
     void Set_ProcessBar_Val(int val);
 
-    // 设置上传与下载的吞吐量
+    // 设置上传速度
     void Set_Upload_Speed(const QString &speed);
 
+    // 设置下载速度
     void Set_Download_Speed(const QString &speed);
 
 
@@ -55,8 +58,8 @@ public slots:
     void Slot_Download_pressed();
     /****** 槽函数，用于响应按钮的点击事件 ******/
 
-    // 用于更新吞吐量
-    void update_speed();
+    // 定时器超时，用于更新吞吐量
+    void onTimeout();
 
 private:
     Ui::MainWindow *ui;
@@ -74,12 +77,12 @@ private:
     // data
     sockaddr_in server_ip, client_ip; // 定义服务器和客户端ip
     SOCKET sock; //定义客户端套接字
-    char *RemoteFile = nullptr, *LocalFile = nullptr;
-    char filename[TFTP_MAX_BLOCK_SIZE];
-    int Bytes_Recv = 0, Bytes_Send = 0, Last_Bytes_Recv = 0, Last_Bytes_Send = 0;
-    int TotalRetransmitCount = 0, FileSize, Mode, OP, Total_Size;
+    char *RemoteFile = nullptr, *LocalFile = nullptr; // 定义远程文件和本地文件
+    char filename[TFTP_MAX_BLOCK_SIZE]; // 文件名
+    int Bytes_Recv = 0, Bytes_Send = 0, Last_Bytes_Recv = 0, Last_Bytes_Send = 0; // 用于计算吞吐量
+    int TotalRetransmitCount = 0, FileSize, Mode, OP, Total_Size; // 总重传次数，文件大小，模式，操作码，总大小
     int server_ip_len = sizeof(server_ip); // 服务器地址长度
-    uint16_t Cur_Block_Num, BlockSize = 512, Timeout = 2;
+    uint16_t Cur_Block_Num, BlockSize = 512, Timeout = 1; // 当前块号，块大小，超时时间
     FILE *fp = nullptr; // 文件指针
     double percent; // 上传进度
     clock_t StartTime, EndTime; // 计时器

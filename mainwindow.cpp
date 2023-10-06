@@ -32,7 +32,6 @@ MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWi
     // 连接进度条信号
     connect(this, &MainWindow::Set_ProcessBar_Val, this, [=](int val) { ui->ProgressBar->setValue(val); });
     // 连接实时吞吐量并按照一定时间间隔更新
-    connect(timer, &QTimer::timeout, this, &MainWindow::update_speed);
     connect(this, &MainWindow::Set_Upload_Speed, this, [=](const QString &speed) { ui->UploadLabel->setText(speed); });
     connect(this, &MainWindow::Set_Download_Speed, this,
             [=](const QString &speed) { ui->DownloadLabel->setText(speed); });
@@ -94,6 +93,10 @@ void MainWindow::Slot_Save2log_pressed() {
 
 void MainWindow::Slot_Upload_pressed() {
     /****** 获取信息并检查参数，重置进度条 ******/
+    QTimer *up_timer = new QTimer(this);
+    connect(up_timer, SIGNAL(timeout()), this, SLOT(onTimeout()));
+    up_timer->start(500);
+
     // 重置进度条和一些信息
     emit Set_ProcessBar_Val(0);
     FileSize = 0;
@@ -105,6 +108,7 @@ void MainWindow::Slot_Upload_pressed() {
     // 若信息为空则弹出提示框
     if (filepath.isEmpty() || server_IP.isEmpty() || client_IP.isEmpty()) {
         QMessageBox::critical(this, tr("Error"), tr("Incomplete Information!"), QMessageBox::Ok);
+        up_timer->stop();
         return;
     }
     // 检查ip地址是否符合格式要求
@@ -117,11 +121,13 @@ void MainWindow::Slot_Upload_pressed() {
             client_IP);
     if (!match_server.hasMatch() || !match_client.hasMatch()) {
         QMessageBox::critical(this, tr("Error"), tr("IP Address Format Error!"), QMessageBox::Ok);
+        up_timer->stop();
         return;
     }
     // 检查相应路径文件是否存在
     if (!QFile::exists(ui->up_LocalFileName->text())) {
         QMessageBox::critical(this, tr("Error"), tr("File Not Found!"), QMessageBox::Ok);
+        up_timer->stop();
         return;
     }
 
@@ -158,6 +164,7 @@ void MainWindow::Slot_Upload_pressed() {
     OP = CMD_WRQ;
     if (open_file() != TFTP_CORRECT) {
         Terminate(false);
+        up_timer->stop();
         return;
     }
 
@@ -175,6 +182,7 @@ void MainWindow::Slot_Upload_pressed() {
     sock = socket(AF_INET, SOCK_DGRAM, 0);
     if (sock == INVALID_SOCKET) {
         emit Write2Output(ERROR_SOCKET_ERROR, QString("Socket creation failed with error: %1").arg(WSAGetLastError()));
+        up_timer->stop();
         return;
     }
     // 提示套接字创建成功的信息
@@ -182,6 +190,7 @@ void MainWindow::Slot_Upload_pressed() {
     // 绑定客户端套接字
     if (bind(sock, (sockaddr *) &client_ip, sizeof(client_ip)) == SOCKET_ERROR) {
         emit Write2Output(ERROR_SOCKET_ERROR, QString("Bind socket failed with code : %1.").arg((WSAGetLastError())));
+        up_timer->stop();
         return;
     }
     // 提示套接字绑定成功的信息
@@ -195,9 +204,9 @@ void MainWindow::Slot_Upload_pressed() {
     emit Write2Output(TFTP_CORRECT, QString("Mode : %1").arg(Mode == MODE_NETASCII ? "netascii" : "octet"));
     // 组装请求报文
     Req_Pkt.opcode = htons(OP);
-    // 编码成netascii，正常模式下就是以二进制bin方式传输
+    /*// 编码成netascii，正常模式下就是以二进制bin方式传输
     if (Mode == MODE_NETASCII)
-        encodeNetascii(LocalFile);
+        encodeNetascii(LocalFile);*/
     // 填充filename和mode
     int reqMsgLen = 0;
     appendMsg(Req_Pkt.reqMsg, REQ_SIZE, &reqMsgLen, "%s", filename);
@@ -213,6 +222,7 @@ void MainWindow::Slot_Upload_pressed() {
     if (res < 0) {
         emit Write2Output(ERROR_SEND_REQ_FAIL,
                           QString("REQUEST : Send request packet failed with code : %1.").arg((WSAGetLastError())));
+        up_timer->stop();
         return;
     } else if (res < OP_SIZE + reqMsgLen) {
         emit Write2Output(TFTP_CORRECT, QString("Send request packet partially with length : %1.").arg(res));
@@ -246,6 +256,7 @@ void MainWindow::Slot_Upload_pressed() {
                 emit Write2Output(ntohs(Rcvd_Pkt.errCode), QString(Rcvd_Pkt.errMsg));
             }
             Terminate(false);
+            up_timer->stop();
             return;
         }
             // 重传
@@ -256,6 +267,7 @@ void MainWindow::Slot_Upload_pressed() {
             if (sendPkt((char *) &Req_Pkt, OP_SIZE + reqMsgLen) < 0) {
                 emit Write2Output(ERROR_SEND_REQ_FAIL, "Send request packet fail.");
                 Terminate(false);
+                up_timer->stop();
                 return;
             }
         }
@@ -264,6 +276,7 @@ void MainWindow::Slot_Upload_pressed() {
     if (Retransmit_Count > TFTP_MAX_RETRANSMIT) {
         emit Write2Output(ERROR_RETRANSMIT_TOO_MUCH, "Retransmission times too much.");
         Terminate(false);
+        up_timer->stop();
         return;
     }
 
@@ -297,6 +310,7 @@ void MainWindow::Slot_Upload_pressed() {
                     emit Write2Output(ERROR_SEND_DATA_FAIL,
                                       QString("DATA %1 : Send DATA packet fail.").arg(Cur_Block_Num - 1));
                     Terminate(false);
+                    up_timer->stop();
                     return;
                 }
                 // 更新进度条和一些需要统计的数据
@@ -319,6 +333,7 @@ void MainWindow::Slot_Upload_pressed() {
                 emit Write2Output(ntohs(Rcvd_Pkt.errCode), QString(Rcvd_Pkt.errMsg));
             }
             Terminate(false);
+            up_timer->stop();
             return;
         }
             // 接收到其他报文
@@ -330,6 +345,7 @@ void MainWindow::Slot_Upload_pressed() {
                 if (sendPkt((char *) &Req_Pkt, OP_SIZE + reqMsgLen) < 0) {
                     emit Write2Output(ERROR_SEND_REQ_FAIL, "REQUEST : Send request packet fail.");
                     Terminate(false);
+                    up_timer->stop();
                     return;
                 }
             } else {
@@ -338,6 +354,7 @@ void MainWindow::Slot_Upload_pressed() {
                     emit Write2Output(ERROR_SEND_DATA_FAIL,
                                       QString("DATA %1 : Send DATA packet fail.").arg(Cur_Block_Num));
                     Terminate(false);
+                    up_timer->stop();
                     return;
                 }
             }
@@ -347,12 +364,18 @@ void MainWindow::Slot_Upload_pressed() {
     if (Retransmit_Count > TFTP_MAX_RETRANSMIT) {
         emit Write2Output(ERROR_RETRANSMIT_TOO_MUCH, "Retransmission times too much.");
         Terminate(false);
+        up_timer->stop();
+        return;
     }
+    up_timer->stop();
 }
 
 
 void MainWindow::Slot_Download_pressed() {
     /****** 获取信息并检查参数，重置进度条 ******/
+    QTimer *down_timer = new QTimer(this);
+    connect(down_timer, SIGNAL(timeout()), this, SLOT(onTimeout()));
+    down_timer->start(500);
     // 重置进度条和一些信息
     emit Set_ProcessBar_Val(0);
     FileSize = 0;
@@ -365,6 +388,7 @@ void MainWindow::Slot_Download_pressed() {
     // 若信息为空则弹出提示框
     if (filepath.isEmpty() || server_IP.isEmpty() || client_IP.isEmpty() || FileName.isEmpty()) {
         QMessageBox::critical(this, tr("Error"), tr("Incomplete Information!"), QMessageBox::Ok);
+        down_timer->stop();
         return;
     }
     // 检查ip地址是否符合格式要求
@@ -377,6 +401,7 @@ void MainWindow::Slot_Download_pressed() {
             client_IP);
     if (!match_server.hasMatch() || !match_client.hasMatch()) {
         QMessageBox::critical(this, tr("Error"), tr("IP Address Format Error!"), QMessageBox::Ok);
+        down_timer->stop();
         return;
     }
 
@@ -393,6 +418,7 @@ void MainWindow::Slot_Download_pressed() {
         // 如果存在就弹出提示框，问是否覆盖，如果是则继续进行，如果否则退出
         if (QMessageBox::No == QMessageBox::warning(this, tr("File Already Exists"), tr("Do you want to overlay it?"),
                                                     QMessageBox::Yes | QMessageBox::No)) {
+            down_timer->stop();
             return;
         }
     }
@@ -412,6 +438,7 @@ void MainWindow::Slot_Download_pressed() {
     OP = CMD_RRQ;
     if (open_file() != TFTP_CORRECT) {
         Terminate(false);
+        down_timer->stop();
         return;
     }
     // 设置服务器端ipv4
@@ -427,6 +454,7 @@ void MainWindow::Slot_Download_pressed() {
     sock = socket(AF_INET, SOCK_DGRAM, 0);
     if (sock == INVALID_SOCKET) {
         emit Write2Output(ERROR_SOCKET_ERROR, QString("Socket creation failed with error: %1").arg(WSAGetLastError()));
+        down_timer->stop();
         return;
     }
     // 提示套接字创建成功的信息
@@ -434,6 +462,7 @@ void MainWindow::Slot_Download_pressed() {
     // 绑定客户端套接字
     if (bind(sock, (sockaddr * ) & client_ip, sizeof(client_ip)) == SOCKET_ERROR) {
         emit Write2Output(ERROR_SOCKET_ERROR, QString("Bind socket failed with code : %1.").arg((WSAGetLastError())));
+        down_timer->stop();
         return;
     }
     // 提示套接字绑定成功的信息
@@ -459,6 +488,7 @@ void MainWindow::Slot_Download_pressed() {
     if (res < 0) {
         emit Write2Output(ERROR_SEND_REQ_FAIL,
                           QString("REQUEST : Send request packet failed with code : %1.").arg((WSAGetLastError())));
+        down_timer->stop();
         return;
     } else if (res < OP_SIZE + reqMsgLen) {
         emit Write2Output(TFTP_CORRECT, QString("Send request packet partially with length : %1.").arg(res));
@@ -484,6 +514,7 @@ void MainWindow::Slot_Download_pressed() {
                 emit Write2Output(ntohs(Rcvd_Pkt.errCode), QString(Rcvd_Pkt.errMsg));
             }
             Terminate(false);
+            down_timer->stop();
             return;
         } else {
             Retransmit_Count++;
@@ -492,6 +523,7 @@ void MainWindow::Slot_Download_pressed() {
             if (sendPkt((char *) &Req_Pkt, OP_SIZE + reqMsgLen) < 0) {
                 emit Write2Output(ERROR_SEND_REQ_FAIL, "Send request packet fail.");
                 Terminate(false);
+                down_timer->stop();
                 return;
             }
         }
@@ -501,6 +533,7 @@ void MainWindow::Slot_Download_pressed() {
     if (Retransmit_Count > TFTP_MAX_RETRANSMIT) {
         emit Write2Output(ERROR_RETRANSMIT_TOO_MUCH, "Retransmission times too much.");
         Terminate(false);
+        down_timer->stop();
         return;
     }
 
@@ -523,6 +556,7 @@ void MainWindow::Slot_Download_pressed() {
             if (fwrite(Rcvd_Pkt.data, 1, Data_Size, fp) < Data_Size) {
                 emit Write2Output(ERROR_FWRITE_FAIL, "Write file fail.");
                 Terminate(false);
+                down_timer->stop();
                 return;
             }
             // 发送ack报文
@@ -532,6 +566,7 @@ void MainWindow::Slot_Download_pressed() {
                 emit Write2Output(ERROR_SEND_ACK_FAIL,
                                   QString("ACK %1 : Send ACK packet fail.").arg(Cur_Block_Num));
                 Terminate(false);
+                down_timer->stop();
                 return;
             }
             // 更新进度条和一些需要统计的数据
@@ -566,6 +601,7 @@ void MainWindow::Slot_Download_pressed() {
                 emit Write2Output(ERROR_SEND_ACK_FAIL,
                                   QString("Send ACK packet %1 fail.").arg(Cur_Block_Num - 1));
                 Terminate(false);
+                down_timer->stop();
                 return;
             }
         }
@@ -573,11 +609,14 @@ void MainWindow::Slot_Download_pressed() {
     if (Retransmit_Count > TFTP_MAX_RETRANSMIT) {
         emit Write2Output(ERROR_RETRANSMIT_TOO_MUCH, "Retransmission times too much.");
         Terminate(false);
+        down_timer->stop();
         return;
     }
+
+    down_timer->stop();
     /****** 等待数据包的到达 ******/
     // 如果是ASCII码模式需要解码
-    if (Mode == MODE_NETASCII) { decodeNetascii(LocalFile, PLATFORM_WINDOWS); }
+    // if (Mode == MODE_NETASCII) { decodeNetascii(LocalFile, PLATFORM_WINDOWS); }
 }
 
 /* 打开文件
@@ -752,7 +791,7 @@ void MainWindow::Terminate(bool is_success) {
     if (fp) { fclose(fp); }
 }
 
-void MainWindow::update_speed() {
+void MainWindow::onTimeout() {
     emit
     Set_Upload_Speed(QString::number(((double) Bytes_Send - Last_Bytes_Send) / TFTP_REFRESH_INTERVAL * 1000 / 1024));
     emit

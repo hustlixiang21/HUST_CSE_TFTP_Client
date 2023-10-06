@@ -50,7 +50,7 @@ cmake_ninja_workdir = C$:/Users/lixiang/CLionProjects/socket/cmake-build-debug/
 build cmake_object_order_depends_target_socket: phony || socket_autogen socket_autogen/EWIEGA46WW/qrc_resources.cpp socket_autogen/mocs_compilation.cpp socket_autogen/timestamp socket_autogen_timestamp_deps
 
 build CMakeFiles/socket.dir/socket_autogen/mocs_compilation.cpp.obj: CXX_COMPILER__socket_unscanned_Debug C$:/Users/lixiang/CLionProjects/socket/cmake-build-debug/socket_autogen/mocs_compilation.cpp || cmake_object_order_depends_target_socket
-  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
+  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\socket.dir\socket_autogen\mocs_compilation.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
   INCLUDES = -IC:/Users/lixiang/CLionProjects/socket/cmake-build-debug/socket_autogen/include -isystem C:/Qt/6.4.3/mingw_64/include/QtCore -isystem C:/Qt/6.4.3/mingw_64/include -isystem C:/Qt/6.4.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.4.3/mingw_64/include/QtGui -isystem C:/Qt/6.4.3/mingw_64/include/QtWidgets
@@ -58,7 +58,7 @@ build CMakeFiles/socket.dir/socket_autogen/mocs_compilation.cpp.obj: CXX_COMPILE
   OBJECT_FILE_DIR = CMakeFiles\socket.dir\socket_autogen
 
 build CMakeFiles/socket.dir/main.cpp.obj: CXX_COMPILER__socket_unscanned_Debug C$:/Users/lixiang/CLionProjects/socket/main.cpp || cmake_object_order_depends_target_socket
-  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
+  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\socket.dir\main.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
   INCLUDES = -IC:/Users/lixiang/CLionProjects/socket/cmake-build-debug/socket_autogen/include -isystem C:/Qt/6.4.3/mingw_64/include/QtCore -isystem C:/Qt/6.4.3/mingw_64/include -isystem C:/Qt/6.4.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.4.3/mingw_64/include/QtGui -isystem C:/Qt/6.4.3/mingw_64/include/QtWidgets
@@ -66,7 +66,7 @@ build CMakeFiles/socket.dir/main.cpp.obj: CXX_COMPILER__socket_unscanned_Debug C
   OBJECT_FILE_DIR = CMakeFiles\socket.dir
 
 build CMakeFiles/socket.dir/mainwindow.cpp.obj: CXX_COMPILER__socket_unscanned_Debug C$:/Users/lixiang/CLionProjects/socket/mainwindow.cpp || cmake_object_order_depends_target_socket
-  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
+  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\socket.dir\mainwindow.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
   INCLUDES = -IC:/Users/lixiang/CLionProjects/socket/cmake-build-debug/socket_autogen/include -isystem C:/Qt/6.4.3/mingw_64/include/QtCore -isystem C:/Qt/6.4.3/mingw_64/include -isystem C:/Qt/6.4.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.4.3/mingw_64/include/QtGui -isystem C:/Qt/6.4.3/mingw_64/include/QtWidgets
@@ -74,7 +74,7 @@ build CMakeFiles/socket.dir/mainwindow.cpp.obj: CXX_COMPILER__socket_unscanned_D
   OBJECT_FILE_DIR = CMakeFiles\socket.dir
 
 build CMakeFiles/socket.dir/util.cpp.obj: CXX_COMPILER__socket_unscanned_Debug C$:/Users/lixiang/CLionProjects/socket/util.cpp || cmake_object_order_depends_target_socket
-  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
+  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\socket.dir\util.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
   INCLUDES = -IC:/Users/lixiang/CLionProjects/socket/cmake-build-debug/socket_autogen/include -isystem C:/Qt/6.4.3/mingw_64/include/QtCore -isystem C:/Qt/6.4.3/mingw_64/include -isystem C:/Qt/6.4.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.4.3/mingw_64/include/QtGui -isystem C:/Qt/6.4.3/mingw_64/include/QtWidgets
@@ -82,7 +82,7 @@ build CMakeFiles/socket.dir/util.cpp.obj: CXX_COMPILER__socket_unscanned_Debug C
   OBJECT_FILE_DIR = CMakeFiles\socket.dir
 
 build CMakeFiles/socket.dir/socket_autogen/EWIEGA46WW/qrc_resources.cpp.obj: CXX_COMPILER__socket_unscanned_Debug C$:/Users/lixiang/CLionProjects/socket/cmake-build-debug/socket_autogen/EWIEGA46WW/qrc_resources.cpp || cmake_object_order_depends_target_socket
-  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
+  DEFINES = -DMINGW_HAS_SECURE_API=1 -DQT_CORE_LIB -DQT_GUI_LIB -DQT_NEEDS_QMAIN -DQT_WIDGETS_LIB -DUNICODE -DWIN32 -DWIN64 -D_ENABLE_EXTENDED_ALIGNED_STORAGE -D_UNICODE -D_WIN64
   DEP_FILE = CMakeFiles\socket.dir\socket_autogen\EWIEGA46WW\qrc_resources.cpp.obj.d
   FLAGS = -g -fdiagnostics-color=always
   INCLUDES = -IC:/Users/lixiang/CLionProjects/socket/cmake-build-debug/socket_autogen/include -isystem C:/Qt/6.4.3/mingw_64/include/QtCore -isystem C:/Qt/6.4.3/mingw_64/include -isystem C:/Qt/6.4.3/mingw_64/mkspecs/win32-g++ -isystem C:/Qt/6.4.3/mingw_64/include/QtGui -isystem C:/Qt/6.4.3/mingw_64/include/QtWidgets
@@ -97,9 +97,10 @@ build CMakeFiles/socket.dir/socket_autogen/EWIEGA46WW/qrc_resources.cpp.obj: CXX
 #############################################
 # Link the executable socket.exe
 
-build socket.exe: CXX_EXECUTABLE_LINKER__socket_Debug CMakeFiles/socket.dir/socket_autogen/mocs_compilation.cpp.obj CMakeFiles/socket.dir/main.cpp.obj CMakeFiles/socket.dir/mainwindow.cpp.obj CMakeFiles/socket.dir/util.cpp.obj CMakeFiles/socket.dir/socket_autogen/EWIEGA46WW/qrc_resources.cpp.obj | C$:/Qt/6.4.3/mingw_64/lib/libQt6Widgets.a C$:/Qt/6.4.3/mingw_64/lib/libQt6Gui.a C$:/Qt/6.4.3/mingw_64/lib/libQt6Core.a || socket_autogen socket_autogen_timestamp_deps
+build socket.exe: CXX_EXECUTABLE_LINKER__socket_Debug CMakeFiles/socket.dir/socket_autogen/mocs_compilation.cpp.obj CMakeFiles/socket.dir/main.cpp.obj CMakeFiles/socket.dir/mainwindow.cpp.obj CMakeFiles/socket.dir/util.cpp.obj CMakeFiles/socket.dir/socket_autogen/EWIEGA46WW/qrc_resources.cpp.obj | C$:/Qt/6.4.3/mingw_64/lib/libQt6Widgets.a C$:/Qt/6.4.3/mingw_64/lib/libQt6Gui.a C$:/Qt/6.4.3/mingw_64/lib/libQt6Core.a C$:/Qt/6.4.3/mingw_64/lib/libQt6EntryPoint.a || socket_autogen socket_autogen_timestamp_deps
   FLAGS = -g
-  LINK_LIBRARIES = -lwsock32  -lws2_32  C:/Qt/6.4.3/mingw_64/lib/libQt6Widgets.a  C:/Qt/6.4.3/mingw_64/lib/libQt6Gui.a  C:/Qt/6.4.3/mingw_64/lib/libQt6Core.a  -lmpr  -luserenv  -ld3d11  -ldxgi  -ldxguid  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
+  LINK_FLAGS = -mwindows
+  LINK_LIBRARIES = -lwsock32  -lws2_32  C:/Qt/6.4.3/mingw_64/lib/libQt6Widgets.a  C:/Qt/6.4.3/mingw_64/lib/libQt6Gui.a  C:/Qt/6.4.3/mingw_64/lib/libQt6Core.a  -lmpr  -luserenv  -lmingw32  C:/Qt/6.4.3/mingw_64/lib/libQt6EntryPoint.a  -lshell32  -ld3d11  -ldxgi  -ldxguid  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\socket.dir
   POST_BUILD = cmd.exe /C "cd /D C:\Users\lixiang\CLionProjects\socket\cmake-build-debug && "C:\Program Files\JetBrains\CLion 2023.2.1\bin\cmake\win\x64\bin\cmake.exe" -E make_directory C:/Users/lixiang/CLionProjects/socket/cmake-build-debug/plugins/platforms/ && cd /D C:\Users\lixiang\CLionProjects\socket\cmake-build-debug && "C:\Program Files\JetBrains\CLion 2023.2.1\bin\cmake\win\x64\bin\cmake.exe" -E copy C:/Qt/6.4.3/mingw_64/lib/cmake/../../plugins/platforms/qwindows.dll C:/Users/lixiang/CLionProjects/socket/cmake-build-debug/plugins/platforms/ && cd /D C:\Users\lixiang\CLionProjects\socket\cmake-build-debug && "C:\Program Files\JetBrains\CLion 2023.2.1\bin\cmake\win\x64\bin\cmake.exe" -E copy C:/Qt/6.4.3/mingw_64/lib/cmake/../../bin/Qt6Core.dll C:/Users/lixiang/CLionProjects/socket/cmake-build-debug && cd /D C:\Users\lixiang\CLionProjects\socket\cmake-build-debug && "C:\Program Files\JetBrains\CLion 2023.2.1\bin\cmake\win\x64\bin\cmake.exe" -E copy C:/Qt/6.4.3/mingw_64/lib/cmake/../../bin/Qt6Gui.dll C:/Users/lixiang/CLionProjects/socket/cmake-build-debug && cd /D C:\Users\lixiang\CLionProjects\socket\cmake-build-debug && "C:\Program Files\JetBrains\CLion 2023.2.1\bin\cmake\win\x64\bin\cmake.exe" -E copy C:/Qt/6.4.3/mingw_64/lib/cmake/../../bin/Qt6Widgets.dll C:/Users/lixiang/CLionProjects/socket/cmake-build-debug"
   PRE_LINK = cd .

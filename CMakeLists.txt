@@ -8,7 +8,6 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_PREFIX_PATH "C:/Qt/6.4.3/mingw_64/lib/cmake")
 set(QRC_SOURCE_FILES resources.qrc)
 
-
 find_package(Qt6 COMPONENTS
         Core
         Gui
@@ -17,15 +16,28 @@ find_package(Qt6 COMPONENTS
 
 qt_add_resources(${QRC_SOURCE_FILES})
 
-add_executable(socket main.cpp
-        mainwindow.cpp
-        mainwindow.h
-        mainwindow.ui
-        def.h
-        util.cpp
-        util.h
-        ${QRC_SOURCE_FILES}
-)
+if (CMAKE-BUILD-TYPE MATCHES "Debug")
+    add_executable(socket main.cpp
+            mainwindow.cpp
+            mainwindow.h
+            mainwindow.ui
+            def.h
+            util.cpp
+            util.h
+            ${QRC_SOURCE_FILES}
+    )
+else ()
+    add_executable(socket WIN32 main.cpp
+            mainwindow.cpp
+            mainwindow.h
+            mainwindow.ui
+            def.h
+            util.cpp
+            util.h
+            ${QRC_SOURCE_FILES}
+    )
+endif ()
+
 target_link_libraries(socket
         Qt::Core
         Qt::Gui

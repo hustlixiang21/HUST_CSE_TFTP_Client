@@ -1,0 +1,28 @@
+{
+	"BUILD_DIR" : "C:/Users/lixiang/CLionProjects/socket/Release/socket_autogen",
+	"CMAKE_BINARY_DIR" : "C:/Users/lixiang/CLionProjects/socket/Release",
+	"CMAKE_CURRENT_BINARY_DIR" : "C:/Users/lixiang/CLionProjects/socket/Release",
+	"CMAKE_CURRENT_SOURCE_DIR" : "C:/Users/lixiang/CLionProjects/socket",
+	"CMAKE_SOURCE_DIR" : "C:/Users/lixiang/CLionProjects/socket",
+	"INCLUDE_DIR" : "C:/Users/lixiang/CLionProjects/socket/Release/socket_autogen/include",
+	"INPUTS" : 
+	[
+		"C:/Users/lixiang/CLionProjects/socket/resources/images/appicon.png",
+		"C:/Users/lixiang/CLionProjects/socket/resources/images/upload.png",
+		"C:/Users/lixiang/CLionProjects/socket/resources/images/clear.png",
+		"C:/Users/lixiang/CLionProjects/socket/resources/images/save.png",
+		"C:/Users/lixiang/CLionProjects/socket/resources/images/openfile.png",
+		"C:/Users/lixiang/CLionProjects/socket/resources/images/download.png",
+		"C:/Users/lixiang/CLionProjects/socket/resources/images/appicon2.png"
+	],
+	"LOCK_FILE" : "C:/Users/lixiang/CLionProjects/socket/Release/CMakeFiles/socket_autogen.dir/AutoRcc_resources_EWIEGA46WW_Lock.lock",
+	"MULTI_CONFIG" : false,
+	"OPTIONS" : [ "-name", "resources" ],
+	"OUTPUT_CHECKSUM" : "EWIEGA46WW",
+	"OUTPUT_NAME" : "qrc_resources.cpp",
+	"RCC_EXECUTABLE" : "C:/Qt/6.4.3/mingw_64/./bin/rcc.exe",
+	"RCC_LIST_OPTIONS" : [ "--list" ],
+	"SETTINGS_FILE" : "C:/Users/lixiang/CLionProjects/socket/Release/CMakeFiles/socket_autogen.dir/AutoRcc_resources_EWIEGA46WW_Used.txt",
+	"SOURCE" : "C:/Users/lixiang/CLionProjects/socket/resources.qrc",
+	"VERBOSITY" : 0
+}

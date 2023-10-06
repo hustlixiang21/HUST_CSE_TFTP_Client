@@ -1,0 +1,14 @@
+# ninja log v5
+4684	14240	7182856838912628	CMakeFiles/socket.dir/socket_autogen/mocs_compilation.cpp.obj	eb5caaadf27d6330
+38	4684	7182856741695828	socket_autogen/timestamp	99f618ab08eda7e5
+4696	14095	7182856837471105	CMakeFiles/socket.dir/util.cpp.obj	b1ff86cd678952f5
+38	4684	7182856741695828	socket_autogen/mocs_compilation.cpp	99f618ab08eda7e5
+38	4684	7182856741695828	C:/Users/lixiang/CLionProjects/socket/Release/socket_autogen/timestamp	99f618ab08eda7e5
+7919	8270	7182852616844539	C:/Users/lixiang/CLionProjects/socket/Release/socket_autogen/EWIEGA46WW/qrc_resources.cpp	4a7379d93ac18ab3
+38	4684	7182856741695828	C:/Users/lixiang/CLionProjects/socket/Release/socket_autogen/mocs_compilation.cpp	99f618ab08eda7e5
+7919	8270	7182852616844539	socket_autogen/EWIEGA46WW/qrc_resources.cpp	4a7379d93ac18ab3
+14096	19495	7182856891390478	CMakeFiles/socket.dir/main.cpp.obj	653e7d0493cd737e
+14241	14477	7182856841290285	CMakeFiles/socket.dir/socket_autogen/EWIEGA46WW/qrc_resources.cpp.obj	9f5519a6d9cdc750
+4690	16606	7182856862562836	CMakeFiles/socket.dir/mainwindow.cpp.obj	bdcd6aa116ef3cd1
+19495	20526	7182856895379801	socket.exe	ed31015abb536a74
+503	2632	7182856954596861	build.ninja	cf78d92211fa761c

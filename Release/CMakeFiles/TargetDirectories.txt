@@ -1,0 +1,5 @@
+C:/Users/lixiang/CLionProjects/socket/Release/CMakeFiles/socket.dir
+C:/Users/lixiang/CLionProjects/socket/Release/CMakeFiles/edit_cache.dir
+C:/Users/lixiang/CLionProjects/socket/Release/CMakeFiles/rebuild_cache.dir
+C:/Users/lixiang/CLionProjects/socket/Release/CMakeFiles/socket_autogen_timestamp_deps.dir
+C:/Users/lixiang/CLionProjects/socket/Release/CMakeFiles/socket_autogen.dir

@@ -6,7 +6,10 @@
 
 ### 如何运行程序？
 
-因为本人使用Clion配置Qt环境，而非直接使用Qt
+可执行程序有两个版本，一个是开发时的**debug版本**，在目录cmake-build-debug中，另一个是**打包发布后的版本**
+，在Release目录中，均可点击直接运行，差别在于debug版本会调出cmd打印一些调试信息。release不会。
+
+如若想**打开本仓库的项目**，因为本人使用Clion配置Qt环境，而非直接使用Qt
 Creator开发，所以需要在Clion中配置Qt的开发环境，具体的配置方法可以参考[这篇文章](https://blog.csdn.net/weixin_39510813/article/details/115482634)。
 然后打开项目，点击运行即可。
 

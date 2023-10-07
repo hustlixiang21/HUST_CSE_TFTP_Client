@@ -12,3 +12,12 @@
 4690	16606	7182856862562836	CMakeFiles/socket.dir/mainwindow.cpp.obj	bdcd6aa116ef3cd1
 19495	20526	7182856895379801	socket.exe	ed31015abb536a74
 503	2632	7182856954596861	build.ninja	cf78d92211fa761c
+166	15740	7183022838396168	socket_autogen/timestamp	99f618ab08eda7e5
+166	15740	7183022838396168	socket_autogen/mocs_compilation.cpp	99f618ab08eda7e5
+166	15740	7183022838396168	C:/Users/lixiang/CLionProjects/socket/Release/socket_autogen/timestamp	99f618ab08eda7e5
+166	15740	7183022838396168	C:/Users/lixiang/CLionProjects/socket/Release/socket_autogen/mocs_compilation.cpp	99f618ab08eda7e5
+15755	36661	7183023050276549	CMakeFiles/socket.dir/main.cpp.obj	653e7d0493cd737e
+15742	36863	7183023051941036	CMakeFiles/socket.dir/socket_autogen/mocs_compilation.cpp.obj	eb5caaadf27d6330
+15762	40870	7183023092674001	CMakeFiles/socket.dir/mainwindow.cpp.obj	bdcd6aa116ef3cd1
+36665	43606	7183023120059457	CMakeFiles/socket.dir/util.cpp.obj	b1ff86cd678952f5
+43606	45185	7183023127167888	socket.exe	ed31015abb536a74

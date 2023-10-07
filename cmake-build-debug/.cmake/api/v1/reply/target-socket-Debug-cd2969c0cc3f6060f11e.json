@@ -17,7 +17,9 @@
 			"target_link_libraries",
 			"set_target_properties",
 			"include",
-			"find_package"
+			"find_package",
+			"find_dependency",
+			"_qt_internal_find_qt_dependencies"
 		],
 		"files" : 
 		[
@@ -30,6 +32,11 @@
 			"C:/Qt/6.4.3/mingw_64/lib/cmake/Qt6Core/Qt6CoreVersionlessTargets.cmake",
 			"C:/Qt/6.4.3/mingw_64/lib/cmake/Qt6Core/Qt6CoreConfig.cmake",
 			"C:/Qt/6.4.3/mingw_64/lib/cmake/Qt6Core/Qt6CoreTargets.cmake",
+			"C:/Qt/6.4.3/mingw_64/lib/cmake/Qt6EntryPointPrivate/Qt6EntryPointPrivateTargets.cmake",
+			"C:/Qt/6.4.3/mingw_64/lib/cmake/Qt6EntryPointPrivate/Qt6EntryPointPrivateConfig.cmake",
+			"C:/Program Files/JetBrains/CLion 2023.2.1/bin/cmake/win/x64/share/cmake-3.26/Modules/CMakeFindDependencyMacro.cmake",
+			"C:/Qt/6.4.3/mingw_64/lib/cmake/Qt6/QtPublicDependencyHelpers.cmake",
+			"C:/Qt/6.4.3/mingw_64/lib/cmake/Qt6Core/Qt6CoreDependencies.cmake",
 			"C:/Qt/6.4.3/mingw_64/lib/cmake/Qt6Gui/Qt6GuiTargets.cmake"
 		],
 		"nodes" : 
@@ -40,25 +47,25 @@
 			{
 				"command" : 0,
 				"file" : 0,
-				"line" : 20,
+				"line" : 30,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 36,
+				"line" : 48,
 				"parent" : 0
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 37,
+				"line" : 49,
 				"parent" : 0
 			},
 			{
 				"command" : 4,
 				"file" : 0,
-				"line" : 12,
+				"line" : 11,
 				"parent" : 0
 			},
 			{
@@ -161,24 +168,78 @@
 			},
 			{
 				"command" : 3,
-				"file" : 5,
+				"file" : 7,
+				"line" : 40,
+				"parent" : 17
+			},
+			{
+				"file" : 13,
+				"parent" : 24
+			},
+			{
+				"command" : 6,
+				"file" : 13,
+				"line" : 39,
+				"parent" : 25
+			},
+			{
+				"command" : 5,
+				"file" : 12,
+				"line" : 108,
+				"parent" : 26
+			},
+			{
+				"command" : 4,
+				"file" : 11,
+				"line" : 76,
+				"parent" : 27
+			},
+			{
+				"file" : 10,
+				"parent" : 28
+			},
+			{
+				"command" : 3,
+				"file" : 10,
 				"line" : 52,
-				"parent" : 12
+				"parent" : 29
 			},
 			{
 				"file" : 9,
-				"parent" : 24
+				"parent" : 30
 			},
 			{
 				"command" : 2,
 				"file" : 9,
 				"line" : 61,
-				"parent" : 25
+				"parent" : 31
+			},
+			{
+				"command" : 2,
+				"file" : 9,
+				"line" : 76,
+				"parent" : 31
+			},
+			{
+				"command" : 3,
+				"file" : 5,
+				"line" : 52,
+				"parent" : 12
+			},
+			{
+				"file" : 14,
+				"parent" : 34
+			},
+			{
+				"command" : 2,
+				"file" : 14,
+				"line" : 61,
+				"parent" : 35
 			},
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 29,
+				"line" : 41,
 				"parent" : 0
 			}
 		]
@@ -195,43 +256,47 @@
 			"defines" : 
 			[
 				{
-					"backtrace" : 27,
+					"backtrace" : 37,
 					"define" : "MINGW_HAS_SECURE_API=1"
 				},
 				{
-					"backtrace" : 27,
+					"backtrace" : 37,
 					"define" : "QT_CORE_LIB"
 				},
 				{
-					"backtrace" : 27,
+					"backtrace" : 37,
 					"define" : "QT_GUI_LIB"
 				},
 				{
-					"backtrace" : 27,
+					"backtrace" : 37,
+					"define" : "QT_NEEDS_QMAIN"
+				},
+				{
+					"backtrace" : 37,
 					"define" : "QT_WIDGETS_LIB"
 				},
 				{
-					"backtrace" : 27,
+					"backtrace" : 37,
 					"define" : "UNICODE"
 				},
 				{
-					"backtrace" : 27,
+					"backtrace" : 37,
 					"define" : "WIN32"
 				},
 				{
-					"backtrace" : 27,
+					"backtrace" : 37,
 					"define" : "WIN64"
 				},
 				{
-					"backtrace" : 27,
+					"backtrace" : 37,
 					"define" : "_ENABLE_EXTENDED_ALIGNED_STORAGE"
 				},
 				{
-					"backtrace" : 27,
+					"backtrace" : 37,
 					"define" : "_UNICODE"
 				},
 				{
-					"backtrace" : 27,
+					"backtrace" : 37,
 					"define" : "_WIN64"
 				}
 			],
@@ -242,27 +307,27 @@
 					"path" : "C:/Users/lixiang/CLionProjects/socket/cmake-build-debug/socket_autogen/include"
 				},
 				{
-					"backtrace" : 27,
+					"backtrace" : 37,
 					"isSystem" : true,
 					"path" : "C:/Qt/6.4.3/mingw_64/include/QtCore"
 				},
 				{
-					"backtrace" : 27,
+					"backtrace" : 37,
 					"isSystem" : true,
 					"path" : "C:/Qt/6.4.3/mingw_64/include"
 				},
 				{
-					"backtrace" : 27,
+					"backtrace" : 37,
 					"isSystem" : true,
 					"path" : "C:/Qt/6.4.3/mingw_64/mkspecs/win32-g++"
 				},
 				{
-					"backtrace" : 27,
+					"backtrace" : 37,
 					"isSystem" : true,
 					"path" : "C:/Qt/6.4.3/mingw_64/include/QtGui"
 				},
 				{
-					"backtrace" : 27,
+					"backtrace" : 37,
 					"isSystem" : true,
 					"path" : "C:/Qt/6.4.3/mingw_64/include/QtWidgets"
 				}
@@ -272,8 +337,8 @@
 			{
 				"backtraces" : 
 				[
-					27,
-					27
+					37,
+					37
 				],
 				"standard" : "17"
 			},
@@ -290,11 +355,11 @@
 	"dependencies" : 
 	[
 		{
-			"backtrace" : 0,
-			"id" : "socket_autogen::@6890427a1f51a3e7e1df"
+			"id" : "socket_autogen_timestamp_deps::@6890427a1f51a3e7e1df"
 		},
 		{
-			"id" : "socket_autogen_timestamp_deps::@6890427a1f51a3e7e1df"
+			"backtrace" : 0,
+			"id" : "socket_autogen::@6890427a1f51a3e7e1df"
 		}
 	],
 	"id" : "socket::@6890427a1f51a3e7e1df",
@@ -307,7 +372,7 @@
 				"role" : "flags"
 			},
 			{
-				"fragment" : "",
+				"fragment" : "-mwindows",
 				"role" : "flags"
 			},
 			{
@@ -346,17 +411,32 @@
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 26,
+				"backtrace" : 32,
+				"fragment" : "-lmingw32",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 32,
+				"fragment" : "C:\\Qt\\6.4.3\\mingw_64\\lib\\libQt6EntryPoint.a",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 33,
+				"fragment" : "-lshell32",
+				"role" : "libraries"
+			},
+			{
+				"backtrace" : 36,
 				"fragment" : "-ld3d11",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 26,
+				"backtrace" : 36,
 				"fragment" : "-ldxgi",
 				"role" : "libraries"
 			},
 			{
-				"backtrace" : 26,
+				"backtrace" : 36,
 				"fragment" : "-ldxguid",
 				"role" : "libraries"
 			},

@@ -4,13 +4,7 @@
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainWindow) {
     ui->setupUi(this);
     /****** 链接信号和槽函数 ******/
-    /* 连接Write2Output信号和槽函数,用于向ui中的Output区输出信息
-     * 默认错误信息为红色，正确信息为绿色,若只是正常输出，raw设置为True即可
-     * @param
-     * code : 信息代码
-     * msg : 信息内容
-     * raw : 是否输出为原始信息
-     * */
+    /* 连接Write2Output信号和槽函数,用于向ui中的Output区输出信息 */
     connect(this, &MainWindow::Write2Output, this, [=](int code, const QString &msg, bool raw) {
         QString fullMsg = QDateTime::currentDateTime().toString("[MM/dd hh:mm:ss]");
         // OK设置成绿色 ERROR设置成红色
@@ -187,7 +181,7 @@ void MainWindow::Slot_Upload_pressed() {
     }
     // 提示套接字创建成功的信息
     emit Write2Output(TFTP_CORRECT, QString("Socket creation successful!"));
-    // 绑定客户端套接字
+    // 绑定客户端套接字，主要用途是将套接字绑定到本地的一个 IP 地址和端口号，操作系统就知道通过哪个地址和端口监听来自网络的数据
     if (bind(sock, (sockaddr *) &client_ip, sizeof(client_ip)) == SOCKET_ERROR) {
         emit Write2Output(ERROR_SOCKET_ERROR, QString("Bind socket failed with code : %1.").arg((WSAGetLastError())));
         up_timer->stop();
@@ -204,9 +198,9 @@ void MainWindow::Slot_Upload_pressed() {
     emit Write2Output(TFTP_CORRECT, QString("Mode : %1").arg(Mode == MODE_NETASCII ? "netascii" : "octet"));
     // 组装请求报文
     Req_Pkt.opcode = htons(OP);
-    /*// 编码成netascii，正常模式下就是以二进制bin方式传输
+    // 编码成netascii，正常模式下就是以二进制bin方式传输
     if (Mode == MODE_NETASCII)
-        encodeNetascii(LocalFile);*/
+        encodeNetascii(LocalFile);
     // 填充filename和mode
     int reqMsgLen = 0;
     appendMsg(Req_Pkt.reqMsg, REQ_SIZE, &reqMsgLen, "%s", filename);
@@ -616,7 +610,7 @@ void MainWindow::Slot_Download_pressed() {
     down_timer->stop();
     /****** 等待数据包的到达 ******/
     // 如果是ASCII码模式需要解码
-    // if (Mode == MODE_NETASCII) { decodeNetascii(LocalFile, PLATFORM_WINDOWS); }
+    if (Mode == MODE_NETASCII) { decodeNetascii(LocalFile, PLATFORM_WINDOWS); }
 }
 
 /* 打开文件
@@ -661,7 +655,7 @@ int MainWindow::recvPkt(char *buf, int len) {
 }
 
 /**
- * 尝试试在TIMEOUT时间内接收一个报文
+ * 尝试在TIMEOUT时间内接收一个报文
  * @TimeOut_Ms : time out interval (ms) 超时时间(毫秒)
  * @Rcvd_Size  : used to return the size of packet received 用来返回接收报文的大小
  * #return    : status code 状态码
@@ -727,7 +721,7 @@ int MainWindow::Wait_ACK_DAT(int TimeOut_Ms, int &Rcvd_Size) {
  * block : 块号
  * TimeOut_Ms : 超时时间
  * Rcvd_Size : 接收的字节数
- * cmd : 报文类型
+ * Pkt_Type : 报文类型
  * */
 int MainWindow::Wait_Specific_PKT(uint16_t block, int TimeOut_Ms, int &Rcvd_Size, uint16_t Pkt_Type) {
     int Rest_Time = TimeOut_Ms, Wait_PktRet, Start_Time;

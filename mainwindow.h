@@ -27,16 +27,30 @@ public:
     // 定义一些信号函数
     signals:
 
-    // 向Output窗口输出信息
+            /* 向Output窗口输出信息，默认错误信息为红色，正确信息为绿色,若只是正常输出，raw设置为True即可
+             * @param
+             * code : 信息代码
+             * msg : 信息内容
+             * raw : 是否输出为原始信息，不带OK或ERR
+             * */
     void Write2Output(int code, const QString &msg, bool raw = false);
 
-    // 设置ProcessBar的数值为val
+    /* 设置ProcessBar的数值为val
+     * @param
+     * val : 进度条数值
+     * */
     void Set_ProcessBar_Val(int val);
 
-    // 设置上传速度
+    /* 设置上传速度
+     * @param
+     * speed : 上传速度
+     * */
     void Set_Upload_Speed(const QString &speed);
 
-    // 设置下载速度
+    /* 设置下载速度
+     * @param
+     * speed : 下载速度
+     * */
     void Set_Download_Speed(const QString &speed);
 
 
@@ -69,7 +83,6 @@ private:
     int sendPkt(const char *buf, int len);
     int recvPkt(char *buf, int len);
     int Wait_PKT(int TimeOut_Ms, int &Rcvd_Size);
-
     int Wait_ACK_DAT(int TimeOut_Ms, int &Rcvd_Size);
     int Wait_Specific_PKT(uint16_t block, int TimeOut_Ms, int &Rcvd_Size, uint16_t Pkt_Type);
     void Terminate(bool is_success);

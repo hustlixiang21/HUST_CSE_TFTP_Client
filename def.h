@@ -59,8 +59,8 @@
 
 // 请求包（包括写请求和读请求）数据结构的定义
 typedef struct {
-    WORD opcode;
-    char reqMsg[REQ_SIZE];
+    WORD opcode;           // 操作码
+    char reqMsg[REQ_SIZE]; // 请求信息
 } PKG_REQUEST;
 
 // DATA包和ERROR包数据结构的定义
@@ -69,18 +69,17 @@ typedef struct {
     union {
         WORD block;    // 块号
         WORD errCode;  // 错误码
-        char opMsg[2]; //
     };
     union {
-        char data[TFTP_MAX_BLOCK_SIZE];
-        char errMsg[ERROR_SIZE];
+        char data[TFTP_MAX_BLOCK_SIZE]; // 数据
+        char errMsg[ERROR_SIZE];        // 错误信息
     };
 } PKG_DATA_ERROR;
 
 // ACK包数据结构的定义
 typedef struct {
-    WORD opcode;
-    WORD block;
+    WORD opcode; // 操作码
+    WORD block;  // 确认的块号
 } PKG_ACK;
 
 
